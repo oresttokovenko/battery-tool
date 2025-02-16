@@ -5,12 +5,15 @@ The System Management Controller (SMC) controls most power functions on modern M
 Battery charging is one of the functions controlled by the SMC. By manipulating the SMC keys,
 you can control battery charging on your Mac. THe SMC keys that control battery charging are:
 
+There is a good discussion on the SMC keys that control battery charging
+on this GitHub issue: https://github.com/zackelia/bclm/issues/20
+
 CH0I/CH0C are "hard" controls that will allow the battery to run down to 0
 CH0K/CH0B are "soft" controls that are reset to 0 when SOC drops below 50%
 
 CH0B and CH0C are used to control whether the SMC permits charging
     - Writing "00" to CH0B & CH0C tells the SMC to allow or resume charging
-        - Writing "02" to CH0B & CH0C tells the SMC to disable or block charging
+    - Writing "02" to CH0B & CH0C tells the SMC to disable or block charging
 
 CH0I controls whether the Mac will force battery discharge even when it’s plugged in
 """
