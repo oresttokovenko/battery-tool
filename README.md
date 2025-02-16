@@ -14,7 +14,7 @@ Note: This tool has only been tested on Apple silicon Macbooks on MacOS 15
 
 I would like to express gratitude to the authors of the following files, which have been instrumental in the development of this project:
 
-- **[battery.sh](https://github.com/actuallymentor/battery/blob/main/battery.sh#L263)** by [Actually Mentor](https://github.com/actuallymentor):  
+- **[battery.sh](https://github.com/actuallymentor/battery/blob/main/battery.sh)** by [Actually Mentor](https://github.com/actuallymentor):  
   This script has been invaluable in providing the foundation for battery management functionality in this project
 
 - **[smc-command](https://github.com/hholtmann/smcFanControl/tree/master/smc-command)** by [hholtmann](https://github.com/hholtmann):  
