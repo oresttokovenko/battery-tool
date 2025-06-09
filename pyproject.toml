@@ -1,6 +1,9 @@
 [project]
 name = "batterytool"
-version = "0.1.0"
+version = "0.1.1"
+authors = [
+    { name = "Orest Tokovenko", email = "hi@oresttokovenko.com"}
+]
 requires-python = ">=3.12, <3.13"
 
 [dependency-groups]

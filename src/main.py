@@ -1,7 +1,7 @@
 """
 SMC Learnings
 
-The System Management Controller (SMC) controls most power functions on modern Macs. 
+The System Management Controller (SMC) controls most power functions on modern Macs.
 Battery charging is one of the functions controlled by the SMC. By manipulating the SMC keys,
 you can control battery charging on your Mac. THe SMC keys that control battery charging are:
 
@@ -41,7 +41,11 @@ class SMCKeys(StrEnum):
 def get_battery_percentage() -> int:
     battery_perc_command = "pmset -g batt | tail -n1 | awk '{print $3}' | sed 's:%;::'"
     result = subprocess.run(
-        battery_perc_command, shell=True, capture_output=True, text=True, check=True,
+        battery_perc_command,
+        shell=True,
+        capture_output=True,
+        text=True,
+        check=True,
     )
     return int(result.stdout)
 
@@ -51,7 +55,11 @@ def is_charger_connected() -> bool:
         "pmset -g batt | head -n1 | awk '{ x=match($0, /AC Power/) > 0; print x }'"
     )
     result = subprocess.run(
-        charger_state_command, shell=True, capture_output=True, text=True, check=True,
+        charger_state_command,
+        shell=True,
+        capture_output=True,
+        text=True,
+        check=True,
     )
     return result.stdout.strip() == "1"
 
@@ -100,6 +108,8 @@ def main() -> None:
     # Check if adapter is connected before proceeding
     if not is_charger_connected():
         logging.error("Charger not connected. Exiting...")
+        # Early return
+        return
     try:
         while True:
             battery_percentage = get_battery_percentage()

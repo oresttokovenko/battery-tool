@@ -8,7 +8,7 @@ Note: This tool has only been tested on Apple silicon Macbooks on MacOS 15
 
 1. Plug in your MacBook 
 2. `uv tool install git+https://github.com/oresttokovenko/batterytool`
-3. `uvx batterytool`
+3. `sudo uvx batterytool` (sudo is needed to run this)
 
 ## Acknowledgements
 
