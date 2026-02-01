@@ -6,16 +6,22 @@ Note: This tool has only been tested on Apple silicon Macbooks on MacOS 15
 
 # Usage
 
-1. Plug in your MacBook 
-2. `uv tool install git+https://github.com/oresttokovenko/batterytool`
-3. `sudo uvx batterytool` (sudo is needed to run this)
+1. Plug in your MacBook
+2. [Install UV](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) using the standalone installer if you don't have it installed
+3. `uv tool install git+https://github.com/oresttokovenko/batterytool`
+4. `sudo uvx batterytool` (sudo is needed to run this)
+
+## Roadmap
+
+- **Cython Integration for Direct SMC Access**: Replace subprocess calls with native Python extension that compiles C source during installation
+- **CHTE Key Support**: Add detection and support for the CHTE SMC key on newer firmware for better hardware compatibility
 
 ## Acknowledgements
 
 I would like to express gratitude to the authors of the following files, which have been instrumental in the development of this project:
 
-- **[battery.sh](https://github.com/actuallymentor/battery/blob/main/battery.sh)** by [Actually Mentor](https://github.com/actuallymentor):  
+- **[battery.sh](https://github.com/actuallymentor/battery/blob/main/battery.sh)** by [Actually Mentor](https://github.com/actuallymentor):
   This script has been invaluable in providing the foundation for battery management functionality in this project
 
-- **[smc-command](https://github.com/hholtmann/smcFanControl/tree/master/smc-command)** by [hholtmann](https://github.com/hholtmann):  
+- **[smc-command](https://github.com/hholtmann/smcFanControl/tree/master/smc-command)** by [hholtmann](https://github.com/hholtmann):
   The `smc-command` tool has been a key resource for interacting with the SMC chip

@@ -50,6 +50,6 @@ def test_keyboard_interrupt(mock_battery_functions, mock_time_sleep, mock_loggin
 
     main()
 
-    mock_logging["error"].assert_any_call("Exiting program...")
-    mock_logging["exception"].assert_any_call("Exiting: Re-enabling charging")
+    mock_logging["info"].assert_any_call("Keyboard interrupt received, exiting...")
+    mock_logging["info"].assert_any_call("Exiting: Re-enabling charging")
     mock_battery_functions["enable_charging"].assert_called_once()

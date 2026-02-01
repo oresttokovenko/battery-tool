@@ -67,17 +67,17 @@ def is_charger_connected() -> bool:
 def disable_charging() -> None:
     # Disable charging by writing 02 to CH0B and CH0C
     # and force discharge by writing 01 to CH0I
-    subprocess.run(
+    _ = subprocess.run(
         f"{MANIPULATE_SMC_KEY} {SMCKeys.CHARGING_CONTROL_B} -w 02",
         shell=True,
         check=True,
     )
-    subprocess.run(
+    _ = subprocess.run(
         f"{MANIPULATE_SMC_KEY} {SMCKeys.CHARGING_CONTROL_C} -w 02",
         shell=True,
         check=True,
     )
-    subprocess.run(
+    _ = subprocess.run(
         f"{MANIPULATE_SMC_KEY} {SMCKeys.DISCHARGE_CONTROL_I} -w 01",
         shell=True,
         check=True,
@@ -87,17 +87,17 @@ def disable_charging() -> None:
 def enable_charging() -> None:
     # Re-enable charging by writing 00 to CH0B and CH0C
     # and allow the adapter to charge by writing 00 to CH0I
-    subprocess.run(
+    _ = subprocess.run(
         f"{MANIPULATE_SMC_KEY} {SMCKeys.CHARGING_CONTROL_B} -w 00",
         shell=True,
         check=True,
     )
-    subprocess.run(
+    _ = subprocess.run(
         f"{MANIPULATE_SMC_KEY} {SMCKeys.CHARGING_CONTROL_C} -w 00",
         shell=True,
         check=True,
     )
-    subprocess.run(
+    _ = subprocess.run(
         f"{MANIPULATE_SMC_KEY} {SMCKeys.DISCHARGE_CONTROL_I} -w 00",
         shell=True,
         check=True,
@@ -110,23 +110,33 @@ def main() -> None:
         logging.error("Charger not connected. Exiting...")
         # Early return
         return
+
+    # Track charging state to avoid unnecessary SMC writes
+    charging_enabled = True  # Assume charging is enabled at start
+
     try:
         while True:
             battery_percentage = get_battery_percentage()
             logging.info(f"Battery percentage: {battery_percentage}")
-            if battery_percentage > HIGH_BATTERY_THRESHOLD:
+
+            # Only change state when crossing thresholds
+            if battery_percentage > HIGH_BATTERY_THRESHOLD and charging_enabled:
                 logging.info("Disabling charging")
                 disable_charging()
-            elif battery_percentage < LOW_BATTERY_THRESHOLD:
+                charging_enabled = False
+            elif battery_percentage < LOW_BATTERY_THRESHOLD and not charging_enabled:
                 logging.info("Enabling charging")
                 enable_charging()
+                charging_enabled = True
+
             logging.info("Sleeping for 60 seconds")
             time.sleep(60)
-    except (KeyboardInterrupt, Exception):
-        logging.error("Exiting program...")
-
+    except KeyboardInterrupt:
+        logging.info("Keyboard interrupt received, exiting...")
+    except Exception:
+        logging.exception("Unexpected error occurred")
     finally:
-        logging.exception("Exiting: Re-enabling charging")
+        logging.info("Exiting: Re-enabling charging")
         enable_charging()
 
 
