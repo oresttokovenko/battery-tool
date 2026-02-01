@@ -30,6 +30,8 @@ BIN_PATH = Path("smc-command") / "smc"
 MANIPULATE_SMC_KEY = f"{BIN_PATH} -k"
 LOW_BATTERY_THRESHOLD = 5
 HIGH_BATTERY_THRESHOLD = 95
+# Exit when battery health reaches or drops below this percentage
+TARGET_BATTERY_HEALTH = 79
 
 
 class SMCKeys(StrEnum):
@@ -48,6 +50,21 @@ def get_battery_percentage() -> int:
         check=True,
     )
     return int(result.stdout)
+
+
+def get_battery_health() -> int:
+    """Get battery health as maximum capacity percentage"""
+    battery_health_command = (
+        "ioreg -r -c AppleSmartBattery | grep -i 'MaximumCapacityPercent' | awk '{print $3}'"
+    )
+    result = subprocess.run(
+        battery_health_command,
+        shell=True,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    return int(result.stdout.strip())
 
 
 def is_charger_connected() -> bool:
@@ -117,7 +134,17 @@ def main() -> None:
     try:
         while True:
             battery_percentage = get_battery_percentage()
-            logging.info(f"Battery percentage: {battery_percentage}")
+            battery_health = get_battery_health()
+            logging.info(
+                f"Battery percentage: {battery_percentage}% | Battery health: {battery_health}%"
+            )
+
+            # Check if target battery health has been reached
+            if battery_health <= TARGET_BATTERY_HEALTH:
+                logging.info(
+                    f"Target battery health of {TARGET_BATTERY_HEALTH}% reached. Current health: {battery_health}%"
+                )
+                break
 
             # Only change state when crossing thresholds
             if battery_percentage > HIGH_BATTERY_THRESHOLD and charging_enabled:
