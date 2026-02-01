@@ -1,6 +1,6 @@
 [project]
 name = "batterytool"
-version = "0.1.1"
+version = "0.1.2"
 authors = [
     { name = "Orest Tokovenko", email = "hi@oresttokovenko.com"}
 ]
@@ -14,7 +14,7 @@ dev = [
 ]
 
 [project.scripts]
-batterytool = "main:main"
+batterytool = "batterytool.main:main"
 
 [build-system]
 requires = ["setuptools"]

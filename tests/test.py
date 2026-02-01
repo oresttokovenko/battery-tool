@@ -1,4 +1,4 @@
-from src.main import main
+from batterytool.main import main
 import pytest
 
 

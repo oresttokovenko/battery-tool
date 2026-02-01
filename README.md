@@ -8,7 +8,7 @@ Note: This tool has only been tested on Apple silicon Macbooks on MacOS 15
 
 1. Plug in your MacBook
 2. [Install UV](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) using the standalone installer if you don't have it installed
-3. `uv tool install git+https://github.com/oresttokovenko/batterytool`
+3. `uv tool install git+https://github.com/oresttokovenko/battery-tool`
 4. `sudo uvx batterytool` (sudo is needed to run this)
 
 ## Roadmap
