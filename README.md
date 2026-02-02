@@ -1,4 +1,4 @@
-#### BatteryTool
+### BatteryTool
 
 Need to kill your MacBook battery? Throw on an HDR YouTube video and run this program until your desired Battery Health is reached. Simply keep your MacBook plugged in and run this program. It will automatically disable charging when the battery reaches or exceeds 95% and re-enable it once the charge drops to 5% or below. The tool continuously monitors battery health and will automatically exit when it reaches 79% or below. The charging state is managed to force the battery to drain and cycle without needing any interaction from you.
 
