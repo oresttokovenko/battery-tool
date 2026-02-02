@@ -41,7 +41,10 @@ class SMCKeys(StrEnum):
 
 
 def get_battery_percentage() -> int:
-    battery_perc_command = "pmset -g batt | tail -n1 | awk '{print $3}' | sed 's:%;::'"
+    """Get current battery percentage"""
+    battery_perc_command = (
+        "pmset -g batt | grep -Eo '[0-9]+%' | head -n1 | sed 's/%//'"
+    )
     result = subprocess.run(
         battery_perc_command,
         shell=True,
@@ -49,7 +52,12 @@ def get_battery_percentage() -> int:
         text=True,
         check=True,
     )
-    return int(result.stdout)
+    output = result.stdout.strip()
+
+    if not output.isdigit():
+        raise ValueError(f"Unexpected battery percentage output: '{output}'")
+
+    return int(output)
 
 
 def get_battery_health() -> int:
@@ -64,7 +72,12 @@ def get_battery_health() -> int:
         text=True,
         check=True,
     )
-    return int(result.stdout.strip())
+    output = result.stdout.strip()
+
+    if not output.isdigit():
+        raise ValueError(f"Unexpected battery health output: '{output}'")
+
+    return int(output)
 
 
 def is_charger_connected() -> bool:
@@ -129,7 +142,7 @@ def main() -> None:
         return
 
     # Track charging state to avoid unnecessary SMC writes
-    charging_enabled = True  # Assume charging is enabled at start
+    charging_enabled = True
 
     try:
         while True:
