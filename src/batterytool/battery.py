@@ -61,6 +61,7 @@ def is_tahoe() -> bool:
 
 # Legacy (pre-macOS 15.7)
 
+
 def legacy_disable_charging() -> None:
     """Disable charging and force discharge via CH0B/CH0C/CH0I"""
     lib.SmcWriteKey(SMCKeys.CHARGING_CONTROL_B, SMCValues.DISABLE_CHARGING)
@@ -76,6 +77,7 @@ def legacy_enable_charging() -> None:
 
 
 # Tahoe (macOS 15.7+)
+
 
 def tahoe_disable_charging() -> None:
     """Disable charging and force discharge via CHTE/CHIE, falls back to CH0J"""
