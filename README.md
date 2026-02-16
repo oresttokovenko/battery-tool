@@ -15,15 +15,14 @@ Only tested on Apple Silicon MacBooks running macOS 15, simply because I have no
 #### Installation
 
 ```bash
-uv tool install battery-tool
+uv tool install --from battery-tool batterytool
+sudo batterytool
 ```
 
-#### Usage
-
-Needs root to talk to the SMC.
+Or for one-off usage:
 
 ```bash
-sudo uvx batterytool
+sudo uvx --from battery-tool batterytool
 ```
 
 #### Options

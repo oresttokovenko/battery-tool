@@ -17,11 +17,14 @@ def setup_logging(log_file: Path | None = None) -> structlog.stdlib.BoundLogger:
     )
 
     formatter = structlog.stdlib.ProcessorFormatter(
-        processors=[structlog.processors.JSONRenderer()],
+        processors=[
+            structlog.stdlib.ProcessorFormatter.remove_processors_meta,
+            structlog.processors.JSONRenderer(),
+        ],
     )
 
     root = logging.getLogger()
-    root.setLevel(logging.DEBUG)
+    root.setLevel(logging.INFO)
 
     console = logging.StreamHandler()
     console.setFormatter(formatter)
