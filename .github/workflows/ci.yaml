@@ -36,7 +36,7 @@ jobs:
         run: uv run nox -s c_test
 
       - name: Build wheel
-        run: uv run python -m build
+        run: uv build --wheel
         env:
           CC: clang
           CXX: clang++
