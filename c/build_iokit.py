@@ -27,6 +27,9 @@ ffibuilder.cdef("""
     } BatteryInfo;
 
     BatteryInfo FetchBatteryInfo(void);
+
+    int SmcWriteKey(const char *key, const char *value);
+    int SmcReadKey(const char *key, char *value, int value_size);
 """)
 
 ffibuilder.set_source(

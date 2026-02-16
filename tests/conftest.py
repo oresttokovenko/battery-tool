@@ -1,38 +1,48 @@
-import pytest
 import logging
-import time
+from types import SimpleNamespace
 
-from batterytool.main import (
-    main,
-    get_battery_percentage,
-    is_charger_connected,
-    disable_charging,
-    enable_charging,
+import pytest
+import structlog
+
+FAKE_BATTERY_INFO = SimpleNamespace(
+    current_capacity=79,
+    max_capacity=79,
+    design_capacity=100,
+    cycle_count=42,
+    is_charging=True,
+    is_plugged_in=True,
 )
 
 
+@pytest.fixture(autouse=True)
+def _reset_logging():
+    """Reset logging state between tests to prevent handler accumulation."""
+    yield
+    root = logging.getLogger()
+    root.handlers.clear()
+    structlog.reset_defaults()
+
+
 @pytest.fixture
-def mock_battery_functions(mocker):
-    """Mock all battery-related functions"""
+def mock_smc(mocker):
+    """Mock all charging functions to prevent any real SMC writes."""
     return {
-        "is_charger_connected": mocker.patch("batterytool.main.is_charger_connected"),
-        "get_battery_percentage": mocker.patch("batterytool.main.get_battery_percentage"),
-        "disable_charging": mocker.patch("batterytool.main.disable_charging"),
-        "enable_charging": mocker.patch("batterytool.main.enable_charging"),
+        "legacy_disable": mocker.patch("batterytool.loop.legacy_disable_charging"),
+        "legacy_enable": mocker.patch("batterytool.loop.legacy_enable_charging"),
+        "tahoe_disable": mocker.patch("batterytool.loop.tahoe_disable_charging"),
+        "tahoe_enable": mocker.patch("batterytool.loop.tahoe_enable_charging"),
     }
 
 
-@pytest.fixture
-def mock_time_sleep(mocker):
-    """Mock time.sleep to avoid actual delays in tests"""
-    return mocker.patch("time.sleep", return_value=None)
+@pytest.fixture(autouse=True)
+def mock_sleep(mocker):
+    """Mock time.sleep to avoid actual delays. Request by name to configure side_effect."""
+    return mocker.patch("batterytool.loop.time.sleep")
 
 
 @pytest.fixture
-def mock_logging(mocker):
-    """Mock logging functions"""
-    return {
-        "info": mocker.patch("batterytool.main.logging.info"),
-        "error": mocker.patch("batterytool.main.logging.error"),
-        "exception": mocker.patch("batterytool.main.logging.exception"),
-    }
+def mock_fetch(mocker):
+    """Mock FetchBatteryInfo with static fake data. Override return_value/side_effect per test."""
+    mock = mocker.patch("batterytool.loop.lib.FetchBatteryInfo")
+    mock.return_value = FAKE_BATTERY_INFO
+    return mock

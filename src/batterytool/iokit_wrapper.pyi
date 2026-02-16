@@ -1,6 +1,6 @@
 """Type stubs for iokit_wrapper CFFI module"""
 
-from typing import Protocol
+from typing import Any, Protocol
 
 class BatteryInfo(Protocol):
     current_capacity: int
@@ -12,5 +12,11 @@ class BatteryInfo(Protocol):
 
 class _Lib(Protocol):
     def FetchBatteryInfo(self) -> BatteryInfo: ...
+    def SmcWriteKey(self, key: bytes, value: bytes) -> int: ...
+    def SmcReadKey(self, key: bytes, value: bytes, value_size: int) -> int: ...
 
+class _FFI(Protocol):
+    def new(self, cdecl: str) -> Any: ...
+
+ffi: _FFI
 lib: _Lib
