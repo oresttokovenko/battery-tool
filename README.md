@@ -35,10 +35,7 @@ sudo uvx batterytool
 | `--min-charge` | Discharge down to this % before charging | `5` |
 | `--interval` | How often to check battery, in seconds | `60` |
 | `--log-file` | Write logs to a file | None |
-| `--dry-run` | Print what would happen, don't touch the SMC | `False` |
 | `--status` | Print current battery stats and exit | `False` |
-| `--monitor-only` | Watch the battery without controlling it | `False` |
-| `--force` | Skip the "is the charger plugged in?" check | `False` |
 
 
 #### Acknowledgements
