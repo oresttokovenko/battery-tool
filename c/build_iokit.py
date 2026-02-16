@@ -1,8 +1,9 @@
 """CFFI build script for generating iokit_wrapper C sources"""
 
-import sys
-from cffi import FFI
 import logging
+import sys
+
+from cffi import FFI
 
 logging.basicConfig(
     level=logging.INFO,

@@ -1,8 +1,6 @@
 ### BatteryTool
 
-AppleCare will replace your MacBook battery for free if it drops below 80% health. Mine was at 81% with two weeks of coverage left. So I wrote a tool to fix that.
-
-BatteryTool cycles your battery on autopilot -- discharge to 5%, charge to 95%, check health, repeat -- until you cross the 80% threshold. Leave it plugged in, go about your life, come back to a warranty-eligible battery. I wrote about the whole process [here](https://oresttokovenko.com/blog/macbook-battery-replacement/).
+BatteryTool cycles your battery on autopilot - discharge to 5%, charge to 95%, check health, repeat until you cross the 80% threshold. Leave it plugged in, go about your life, come back to a warranty-eligible battery. I wrote about the whole process [here](https://oresttokovenko.com/blog/macbook-battery-replacement/).
 
 > If you purchased an AppleCare Protection Plan for your Mac laptop and your battery retains less than 80 percent of its original capacity, Apple will replace the battery at no charge.
 

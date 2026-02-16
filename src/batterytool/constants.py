@@ -7,6 +7,8 @@ DEFAULT_POLLING_INTERVAL = 60
 
 
 class SMCKeys(StrEnum):
+    """SMC key names for battery charging control"""
+
     # Legacy keys (pre-macOS 15.7)
     CHARGING_CONTROL_B = "CH0B"
     CHARGING_CONTROL_C = "CH0C"
@@ -19,6 +21,8 @@ class SMCKeys(StrEnum):
 
 
 class SMCValues(StrEnum):
+    """Hex values written to SMC keys"""
+
     # Legacy charging (CH0B/CH0C)
     ENABLE_CHARGING = "00"
     DISABLE_CHARGING = "02"

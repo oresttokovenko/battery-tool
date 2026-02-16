@@ -52,23 +52,17 @@ import typer
 from structlog.typing import FilteringBoundLogger
 
 from batterytool.constants import (
-    DEFAULT_MAX_CHARGE,
-    DEFAULT_MIN_CHARGE,
-    DEFAULT_POLLING_INTERVAL,
-    DEFAULT_TARGET_HEALTH,
     MANIPULATE_SMC_KEY,
     SMCKeys,
     SMCValues,
 )
-
-from batterytool.iokit_wrapper import lib
 
 # Configure structlog for JSON output
 structlog.configure(
     processors=[
         structlog.processors.add_log_level,
         structlog.processors.TimeStamper(fmt="iso"),
-        structlog.processors.JSONRenderer()
+        structlog.processors.JSONRenderer(),
     ]
 )
 
@@ -77,12 +71,9 @@ logger: FilteringBoundLogger = structlog.get_logger()  # type: ignore[reportAny]
 app = typer.Typer(help="BatteryTool - Cycle your MacBook battery for warranty replacement")
 
 
-
 def get_battery_percentage() -> int:
     """Get current battery percentage"""
-    battery_perc_command = (
-        "pmset -g batt | grep -Eo '[0-9]+%' | head -n1 | sed 's/%//'"
-    )
+    battery_perc_command = "pmset -g batt | grep -Eo '[0-9]+%' | head -n1 | sed 's/%//'"
     result = subprocess.run(
         battery_perc_command,
         shell=True,
@@ -100,9 +91,7 @@ def get_battery_percentage() -> int:
 
 def get_battery_health() -> int:
     """Get battery health as maximum capacity percentage"""
-    battery_health_command = (
-        "ioreg -r -c AppleSmartBattery | grep -i 'MaximumCapacityPercent' | awk '{print $3}'"
-    )
+    battery_health_command = "ioreg -r -c AppleSmartBattery | grep -i 'MaximumCapacityPercent' | awk '{print $3}'"
     result = subprocess.run(
         battery_health_command,
         shell=True,
@@ -119,9 +108,8 @@ def get_battery_health() -> int:
 
 
 def is_charger_connected() -> bool:
-    charger_state_command = (
-        "pmset -g batt | head -n1 | awk '{ x=match($0, /AC Power/) > 0; print x }'"
-    )
+    """Check if the power adapter is connected"""
+    charger_state_command = "pmset -g batt | head -n1 | awk '{ x=match($0, /AC Power/) > 0; print x }'"
     result = subprocess.run(
         charger_state_command,
         shell=True,
@@ -133,6 +121,7 @@ def is_charger_connected() -> bool:
 
 
 def disable_charging() -> None:
+    """Disable charging and enable forced discharge via SMC"""
     _ = subprocess.run(
         f"{MANIPULATE_SMC_KEY} {SMCKeys.CHARGING_CONTROL_B} -w {SMCValues.DISABLE_CHARGING}",
         shell=True,
@@ -151,8 +140,7 @@ def disable_charging() -> None:
 
 
 def enable_charging() -> None:
-    # Re-enable charging by writing 00 to CH0B and CH0C
-    # and allow the adapter to charge by writing 00 to CH0I
+    """Re-enable charging and disable forced discharge via SMC"""
     _ = subprocess.run(
         f"{MANIPULATE_SMC_KEY} {SMCKeys.CHARGING_CONTROL_B} -w 00",
         shell=True,
@@ -183,9 +171,6 @@ def main(
     force: Annotated[bool, typer.Option("--force", help="Skip safety checks")] = False,
 ) -> None:
     """BatteryTool - Cycle your MacBook battery for warranty replacement"""
-
-    info = lib.FetchBatteryInfo()
-
     # Handle --status flag
     if status:
         battery_percentage = get_battery_percentage()
