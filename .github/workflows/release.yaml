@@ -19,7 +19,7 @@ jobs:
         uses: astral-sh/setup-uv@v5
 
       - name: Build package
-        run: uv run python -m build
+        run: uv build --wheel
         env:
           CC: clang
           CXX: clang++
