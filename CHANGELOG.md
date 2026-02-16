@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/oresttokovenko/battery-tool/compare/v0.2.0...v0.2.1) (2026-02-16)
+
+
+### Bug Fixes
+
+* use ubuntu runner for PyPI publish step ([f30bd4e](https://github.com/oresttokovenko/battery-tool/commit/f30bd4ec8f244f06169b425de103e68aee9c757b))
+* use ubuntu runner for PyPI publish step ([4b0515b](https://github.com/oresttokovenko/battery-tool/commit/4b0515b2d66f5edf3433857f4e7643d9eed364fc))
+
 ## [0.2.0](https://github.com/oresttokovenko/battery-tool/compare/v0.1.0...v0.2.0) (2026-02-16)
 
 
