@@ -36,7 +36,7 @@ def type_check(session):
 
 @nox.session
 def c_test(session):
-    session.install("meson")
+    session.install("meson", "cffi")
     session.run("meson", "setup", "builddir", "--native-file", "native-macos.ini", success_codes=[0, 1])
     session.run("meson", "compile", "-C", "builddir")
     session.run("meson", "test", "-C", "builddir", "--no-suite", "hardware")
