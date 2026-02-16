@@ -1,14 +1,24 @@
 [project]
-name = "batterytool"
-version = "0.2.1"
+name = "battery-tool"
+description = "A command-line tool to monitor your battery health on macOS in a detrimental way"
+version = "0.0.1"
 authors = [
     { name = "Orest Tokovenko", email = "hi@oresttokovenko.com"}
 ]
 requires-python = ">=3.12, <3.13"
 license = { text = "Apache-2.0" }
+dependencies = [
+    "cffi>=2.0.0",
+    "structlog>=25.5.0",
+    "typer>=0.23.0",
+]
 
 [dependency-groups]
 dev = [
+    "basedpyright>=1.38.0",
+    "meson>=1.2.0",
+    "nox>=2026.2.9",
+    "pyproject-fmt>=2.16.0",
     "pytest>=8.3.4",
     "pytest-mock>=3.14.0",
     "ruff>=0.9.6",
@@ -18,11 +28,75 @@ dev = [
 batterytool = "batterytool.main:main"
 
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["meson-python", "cffi>=2.0.0"]
+build-backend = "mesonpy"
 
-[tool.setuptools.data-files]
-"smc-command" = ["smc-command/smc"]
+[tool.basedpyright]
+pythonVersion = "3.12"
+include = ["src/batterytool/**"]
+typeCheckingMode = "strict"
+failOnWarnings = false
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+exclude = [
+    "**/gen_models/**",
+    "noxfile.py", 
+    "tests/**"
+]
+
+[tool.pytest.ini_options]
+log_level = "WARNING"
+log_cli = false
+[tool.ruff.lint]
+select = [
+    # finds syntax errors and undefined names
+    "F",
+    # finds likely bugs and design problems
+    # that are well known and easy to fix
+    "B",
+    # checks for PEP8 compliance
+    # Python's official style guide
+    "E",
+    # sorts imports
+    "I",
+    # helps to write cleaner, simpler code
+    "SIM",
+    # automatically upgrades code to newer versions of Python
+    # ex. foo: Union[int, str] -> foo: int | str
+    "UP",
+    # collection of best practices
+    "RUF",
+    # doc string checks
+    "D",
+]
+fixable = ["ALL"]
+ignore = [
+    # ignoring D107 because we don't need docstrings for __init__ methods
+    "D107",
+    # ignoring punctuation checks
+    "D415",
+    # ignoring summary line requirement
+    "D212",
+    # ignoring D100 because we don't need module-level docstrings
+    "D100",
+    # ignoring D104 because we don't need to document the module 
+    "D104",
+    # Ignoring D401 because we can write in any mood we like
+    "D401",
+    # ignoring D205 because we don't need a summary line in a file docstring
+    "D205"
+]
+
+[tool.ruff.lint.pydocstyle]
+# using Google's docstring convention for classes, functions and methods
+# https://google.github.io/styleguide/pyguide.html#383-functions-and-methods
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.pyproject-fmt]
+column_width = 120
+indent = 4
