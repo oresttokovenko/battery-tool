@@ -13,7 +13,7 @@ test_power_sources = executable(
   include_directories: include_directories('..'),
 )
 
-test('power_sources tests', test_power_sources)
+test('power_sources tests', test_power_sources, suite: 'hardware')
 
 test_smc_wrapper = executable(
   'test_smc_wrapper',
