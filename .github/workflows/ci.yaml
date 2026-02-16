@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  checks:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        run: uv sync --all-groups
+
+      - name: Run lint
+        run: uv run nox -s lint
+
+      - name: Run format check
+        run: uv run nox -s format_check
+
+      - name: Run type check
+        run: uv run nox -s type_check
+
+      - name: Run Python tests
+        run: uv run nox -s tests
+
+      - name: Run C tests
+        run: uv run nox -s c_test
+
+      - name: Build wheel
+        run: uv build --wheel
+        env:
+          CC: clang
+          CXX: clang++

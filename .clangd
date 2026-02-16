@@ -1,0 +1,5 @@
+CompileFlags:
+  CompilationDatabase: build/cp312
+Diagnostics:
+  Suppress:
+    - unused-includes

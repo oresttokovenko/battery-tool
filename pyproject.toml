@@ -1,28 +1,93 @@
+[build-system]
+build-backend = "mesonpy"
+requires = [ "cffi>=2", "meson-python" ]
+
 [project]
-name = "batterytool"
-version = "0.2.1"
-authors = [
-    { name = "Orest Tokovenko", email = "hi@oresttokovenko.com"}
-]
-requires-python = ">=3.12, <3.13"
+name = "battery-tool"
+version = "0.0.1"
+description = "A command-line tool to monitor your battery health on macOS in a detrimental way"
 license = { text = "Apache-2.0" }
+authors = [ { name = "Orest Tokovenko", email = "hi@oresttokovenko.com" } ]
+requires-python = ">=3.12,<3.13"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+  "cffi>=2",
+  "structlog>=25.5",
+  "typer>=0.23",
+]
+scripts.batterytool = "batterytool.main:main"
 
 [dependency-groups]
 dev = [
-    "pytest>=8.3.4",
-    "pytest-mock>=3.14.0",
-    "ruff>=0.9.6",
+  "basedpyright>=1.38",
+  "meson>=1.2",
+  "nox>=2026.2.9",
+  "pyproject-fmt>=2.16",
+  "pytest>=8.3.4",
+  "pytest-mock>=3.14",
+  "ruff>=0.9.6",
 ]
 
-[project.scripts]
-batterytool = "batterytool.main:main"
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+exclude = [ "noxfile.py", "tests/**" ]
+format.quote-style = "double"
+lint.select = [
+  # finds likely bugs and design problems
+  # that are well known and easy to fix
+  "B",
+  # doc string checks
+  "D",
+  # checks for PEP8 compliance
+  # Python's official style guide
+  "E",
+  # finds syntax errors and undefined names
+  "F",
+  # sorts imports
+  "I",
+  # collection of best practices
+  "RUF",
+  # helps to write cleaner, simpler code
+  "SIM",
+  # automatically upgrades code to newer versions of Python
+  # ex. foo: Union[int, str] -> foo: int | str
+  "UP",
+]
+lint.ignore = [
+  # ignoring D100 because we don't need module-level docstrings
+  "D100",
+  # ignoring D104 because we don't need to document the module
+  "D104",
+  # ignoring D107 because we don't need docstrings for __init__ methods
+  "D107",
+  # ignoring D205 because we don't need a summary line in a file docstring
+  "D205",
+  # ignoring summary line requirement
+  "D212",
+  # Ignoring D401 because we can write in any mood we like
+  "D401",
+  # ignoring punctuation checks
+  "D415"
+]
+lint.fixable = [ "ALL" ]
+# using Google's docstring convention for classes, functions and methods
+# https://google.github.io/styleguide/pyguide.html#383-functions-and-methods
+lint.pydocstyle.convention = "google"
 
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+[tool.pyproject-fmt]
+column_width = 120
+indent = 2
 
-[tool.setuptools.data-files]
-"smc-command" = ["smc-command/smc"]
+[tool.pytest]
+ini_options.log_level = "WARNING"
+ini_options.log_cli = false
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.basedpyright]
+pythonVersion = "3.12"
+include = [ "src/batterytool/**" ]
+typeCheckingMode = "strict"
+failOnWarnings = false
