@@ -1,16 +1,8 @@
 """CFFI build script for generating iokit_wrapper C sources"""
 
-import logging
 import sys
 
 from cffi import FFI
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
-)
-
-logger = logging.getLogger(__name__)
 
 ffibuilder = FFI()
 
@@ -36,6 +28,7 @@ ffibuilder.set_source(
     "iokit_wrapper",
     """
     #include "power_sources.h"
+    #include "smc_wrapper.h"
     """,
     sources=[],
     include_dirs=["c"],
@@ -46,5 +39,4 @@ if __name__ == "__main__":
         output_file = sys.argv[1]
         ffibuilder.emit_c_code(output_file)
     else:
-        logging.error("error")
-        sys.exit(1)
+        sys.exit("Usage: build_iokit.py <output_file>")

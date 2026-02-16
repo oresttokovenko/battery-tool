@@ -141,3 +141,5 @@ kern_return_t SMCWriteSimple(UInt32Char_t key, char *wvalue, io_connect_t conn);
 kern_return_t SMCOpen(io_connect_t *conn);
 kern_return_t SMCClose(io_connect_t conn);
 kern_return_t SMCReadKey2(UInt32Char_t key, SMCVal_t *val, io_connect_t conn);
+kern_return_t SMCCall2(int index, SMCKeyData_t *inputStructure,
+                       SMCKeyData_t *outputStructure, io_connect_t conn);

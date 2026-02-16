@@ -19,7 +19,7 @@ cffi_generated = custom_target(
 # Compile CFFI-generated code + C sources into extension
 py.extension_module(
   'iokit_wrapper',
-  [cffi_generated, 'smc.c', 'power_sources.c'],
+  [cffi_generated, 'smc.c', 'smc_wrapper.c', 'power_sources.c'],
   dependencies: [
     dependency('appleframeworks', modules: ['IOKit', 'CoreFoundation']),
   ],

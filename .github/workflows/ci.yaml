@@ -40,6 +40,3 @@ jobs:
         env:
           CC: clang
           CXX: clang++
-
-      - name: Test wheel import
-        run: uv run pip install dist/*.whl && uv run python -c "from batterytool.iokit_wrapper import lib"

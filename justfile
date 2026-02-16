@@ -4,21 +4,24 @@ default:
 
 # ==================== C Recipes ====================
 
+# Third-party SMC files excluded from formatting/linting
+c_sources := `find c -maxdepth 1 \( -name '*.c' -o -name '*.h' \) ! -name 'smc.c' ! -name 'smc.h' | tr '\n' ' '`
+
 [doc("Format C code with clang-format")]
 c-format:
-    clang-format -i c/*.c c/*.h
+    clang-format -i {{ c_sources }}
 
 [doc("Check C code formatting without modifying files")]
 c-format-check:
-    clang-format --dry-run --Werror c/*.c c/*.h
+    clang-format --dry-run --Werror {{ c_sources }}
 
 [doc("Lint C code with clang-tidy")]
 c-lint:
-    clang-tidy c/power_sources.c
+    clang-tidy {{ c_sources }}
 
 [doc("Lint and fix C code with clang-tidy")]
 c-lint-fix:
-    clang-tidy --fix c/power_sources.c
+    clang-tidy --fix {{ c_sources }}
 
 [doc("Run C tests with cmocka")]
 c-test:
