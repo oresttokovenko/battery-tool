@@ -18,7 +18,7 @@ dependencies = [
   "structlog>=25.5",
   "typer>=0.23",
 ]
-scripts.batterytool = "batterytool.main:main"
+scripts.battery-tool = "batterytool.main:main"
 
 [dependency-groups]
 dev = [
