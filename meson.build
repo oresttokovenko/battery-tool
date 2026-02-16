@@ -22,6 +22,10 @@ py = import('python').find_installation(pure: false, modules: ['cffi'])
 
 py.install_sources(
   'src/batterytool/__init__.py',
+  'src/batterytool/battery.py',
+  'src/batterytool/constants.py',
+  'src/batterytool/logging.py',
+  'src/batterytool/loop.py',
   'src/batterytool/main.py',
   subdir: 'batterytool',
 )

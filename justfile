@@ -27,6 +27,10 @@ c-lint-fix:
 c-test:
     uv run meson test -C builddir
 
+[doc("Run C tests excluding hardware-dependent tests (for CI)")]
+c-test-ci:
+    uv run meson test -C builddir --no-suite hardware
+
 [doc("Run all C checks (format + lint + test)")]
 c-check: c-format-check c-lint c-test
 

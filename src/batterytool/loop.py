@@ -3,12 +3,12 @@ import time
 import structlog
 
 from batterytool.battery import (
+    fetch_battery_info,
     legacy_disable_charging,
     legacy_enable_charging,
     tahoe_disable_charging,
     tahoe_enable_charging,
 )
-from batterytool.iokit_wrapper import lib
 
 
 def legacy_loop(
@@ -23,7 +23,7 @@ def legacy_loop(
 
     try:
         while True:
-            battery_info = lib.FetchBatteryInfo()
+            battery_info = fetch_battery_info()
             battery_percentage = battery_info.current_capacity / battery_info.max_capacity * 100
             battery_health = battery_info.max_capacity / battery_info.design_capacity * 100
 
@@ -80,7 +80,7 @@ def tahoe_loop(
 
     try:
         while True:
-            battery_info = lib.FetchBatteryInfo()
+            battery_info = fetch_battery_info()
             battery_percentage = battery_info.current_capacity / battery_info.max_capacity * 100
             battery_health = battery_info.max_capacity / battery_info.design_capacity * 100
 

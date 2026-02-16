@@ -10,7 +10,7 @@ DEV_DEPS = nox.project.dependency_groups(PYPROJECT, "dev")
 
 @nox.session(python=PYTHON_VERSIONS)
 def tests(session):
-    session.install(*CORE_DEPS)
+    session.install(".")
     session.install(*DEV_DEPS)
     session.run("python", "-m", "pytest", *session.posargs)
 
@@ -39,4 +39,4 @@ def c_test(session):
     session.install("meson")
     session.run("meson", "setup", "builddir", "--native-file", "native-macos.ini", success_codes=[0, 1])
     session.run("meson", "compile", "-C", "builddir")
-    session.run("meson", "test", "-C", "builddir")
+    session.run("meson", "test", "-C", "builddir", "--no-suite", "hardware")

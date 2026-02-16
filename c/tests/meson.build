@@ -27,4 +27,4 @@ test_smc_wrapper = executable(
   include_directories: include_directories('..'),
 )
 
-test('smc_wrapper tests', test_smc_wrapper)
+test('smc_wrapper tests', test_smc_wrapper, suite: 'hardware')

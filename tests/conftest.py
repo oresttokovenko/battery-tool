@@ -43,6 +43,6 @@ def mock_sleep(mocker):
 @pytest.fixture
 def mock_fetch(mocker):
     """Mock FetchBatteryInfo with static fake data. Override return_value/side_effect per test."""
-    mock = mocker.patch("batterytool.loop.lib.FetchBatteryInfo")
+    mock = mocker.patch("batterytool.loop.fetch_battery_info")
     mock.return_value = FAKE_BATTERY_INFO
     return mock

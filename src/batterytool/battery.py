@@ -48,6 +48,11 @@ from batterytool.constants import SMCKeys, SMCValues
 from batterytool.iokit_wrapper import ffi, lib
 
 
+def fetch_battery_info():
+    """Fetch current battery info from IOKit via CFFI."""
+    return lib.FetchBatteryInfo()
+
+
 def is_apple_silicon() -> bool:
     """Check if I'm running on an Apple Silicon Mac"""
     return platform.machine() == "arm64"
