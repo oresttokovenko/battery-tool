@@ -12,3 +12,11 @@ wheels/
 # Virtual environments
 .venv
 
+# Meson subproject downloads
+subprojects/*/
+subprojects/packagecache/
+!subprojects/*.wrap
+!subprojects/.wraplock
+
+# Meson build artifacts
+builddir/
