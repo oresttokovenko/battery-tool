@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.3](https://github.com/oresttokovenko/battery-tool/compare/v0.2.2...v0.2.3) (2026-02-16)
+
+
+### Bug Fixes
+
+* clean up logging and correctly cli invocation ([1a36f0c](https://github.com/oresttokovenko/battery-tool/commit/1a36f0cabdd164d354c5d5ca35076c78a2a1af78))
+* clean up logging and correctly cli invocation ([2c5d760](https://github.com/oresttokovenko/battery-tool/commit/2c5d7604edea23f4c6e1a658b63e047e41823edb))
+
 ## [0.2.2](https://github.com/oresttokovenko/battery-tool/compare/v0.2.1...v0.2.2) (2026-02-16)
 
 
