@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2](https://github.com/oresttokovenko/battery-tool/compare/v0.2.1...v0.2.2) (2026-02-16)
+
+
+### Bug Fixes
+
+* rename release workflow to match PyPI trusted publisher ([c86def1](https://github.com/oresttokovenko/battery-tool/commit/c86def1cb706f5c5fa504d5ce1639cee9e052537))
+* rename release workflow to match PyPI trusted publisher ([64b16d9](https://github.com/oresttokovenko/battery-tool/commit/64b16d95fab18bb37aa137af0f5b5089f4999927))
+
 ## [0.2.1](https://github.com/oresttokovenko/battery-tool/compare/v0.2.0...v0.2.1) (2026-02-16)
 
 
