@@ -56,26 +56,10 @@ python-typecheck:
 [doc("Run all Python checks (format + lint + typecheck)")]
 python-check: python-format-check python-lint python-typecheck
 
-# ==================== Setup & Dependencies ====================
-
-[doc("Check for required dependencies")]
-check-deps:
-    @echo "Checking dependencies..."
-    @command -v clang-format >/dev/null 2>&1 || (echo "❌ clang-format not found" && exit 1)
-    @command -v clang-tidy >/dev/null 2>&1 || (echo "❌ clang-tidy not found" && exit 1)
-    @command -v meson >/dev/null 2>&1 || (echo "❌ meson not found" && exit 1)
-    @pkg-config --exists cmocka || (echo "❌ cmocka not found" && exit 1)
-    @echo "✅ All dependencies found!"
-
-[doc("Install all dependencies via Homebrew")]
-setup:
-    brew bundle
-
 # ==================== Build & Install ====================
 
 [doc("Build the project with meson")]
 build:
-    uv run meson setup builddir --native-file native-macos.ini || true
     uv run meson compile -C builddir
 
 [doc("Wipe build directory and rebuild from scratch")]
@@ -86,8 +70,6 @@ rebuild:
 [doc("Clean build artifacts")]
 clean:
     rm -rf builddir build dist *.egg-info
-    find . -type d -name __pycache__ -exec rm -rf {} +
-    find . -type d -name .pytest_cache -exec rm -rf {} +
 
 [doc("Install the package in development mode")]
 install:

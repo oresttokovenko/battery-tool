@@ -34,3 +34,12 @@ jobs:
 
       - name: Run C tests
         run: uv run nox -s c_test
+
+      - name: Build wheel
+        run: uv run python -m build
+        env:
+          CC: clang
+          CXX: clang++
+
+      - name: Test wheel import
+        run: uv run pip install dist/*.whl && uv run python -c "from batterytool.iokit_wrapper import lib"
