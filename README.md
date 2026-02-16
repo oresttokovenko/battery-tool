@@ -6,7 +6,7 @@ BatteryTool cycles your battery on autopilot -- discharge to 5%, charge to 95%, 
 
 > If you purchased an AppleCare Protection Plan for your Mac laptop and your battery retains less than 80 percent of its original capacity, Apple will replace the battery at no charge.
 
-Only tested on Apple Silicon MacBooks running macOS 15.
+Only tested on Apple Silicon MacBooks running macOS 15, simply because I have no other way to test other Macs. VMs don't allow IOKit access to the real SMC hardware.
 
 #### Before you start
 
@@ -16,13 +16,9 @@ Only tested on Apple Silicon MacBooks running macOS 15.
 
 #### Installation
 
-1. [Install uv](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) if you don't have it
-2. Clone and install:
-   ```bash
-   git clone https://github.com/oresttokovenko/battery-tool.git
-   cd battery-tool
-   uv tool install git+https://github.com/oresttokovenko/battery-tool
-   ```
+```bash
+uv tool install battery-tool
+```
 
 #### Usage
 
@@ -46,19 +42,6 @@ sudo uvx batterytool
 | `--monitor-only` | Watch the battery without controlling it | `False` |
 | `--force` | Skip the "is the charger plugged in?" check | `False` |
 
-#### How it works
-
-The SMC (System Management Controller) controls battery charging on Macs. Apple doesn't document its keys, but people have [reverse-engineered them](https://github.com/zackelia/bclm/issues/20). The tool writes to these keys to disable charging and force discharge while the laptop stays plugged in.
-
-The cycle looks like this:
-1. Write to `CH0B`/`CH0C`/`CH0I` (or `CHTE`/`CHIE` on macOS 15.7+) to block charging and force discharge
-2. Wait for the battery to drain to `--min-charge`
-3. Re-enable charging, wait until `--max-charge`
-4. Check health (max capacity / design capacity)
-5. If health is still above `--target-health`, go to 1
-6. On any exit -- Ctrl+C, crash, target reached -- charging gets re-enabled. Your battery won't get stuck in a weird state.
-
-In my case, it took about 85 cycles over 10 days to go from 81% to 79%.
 
 #### Acknowledgements
 
