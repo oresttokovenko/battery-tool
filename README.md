@@ -1,5 +1,10 @@
 ### BatteryTool
 
+[![PyPI](https://img.shields.io/pypi/v/battery-tool)](https://pypi.org/project/battery-tool/)
+[![Python](https://img.shields.io/pypi/pyversions/battery-tool)](https://pypi.org/project/battery-tool/)
+[![License](https://img.shields.io/pypi/l/battery-tool)](https://github.com/oresttokovenko/BatteryTool/blob/main/LICENSE)
+[![macOS](https://img.shields.io/badge/platform-macOS-lightgrey)](https://github.com/oresttokovenko/BatteryTool)
+
 BatteryTool cycles your battery on autopilot - discharge to 5%, charge to 95%, check health, repeat until you cross the 80% threshold. Leave it plugged in, go about your life, come back to a warranty-eligible battery. I wrote about the whole process [here](https://oresttokovenko.com/blog/macbook-battery-replacement/).
 
 > If you purchased an AppleCare Protection Plan for your Mac laptop and your battery retains less than 80 percent of its original capacity, Apple will replace the battery at no charge.

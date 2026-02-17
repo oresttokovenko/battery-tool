@@ -6,6 +6,7 @@ requires = [ "cffi>=2", "meson-python" ]
 name = "battery-tool"
 version = "0.2.3"
 description = "A command-line tool to monitor your battery health on macOS in a detrimental way"
+readme = "README.md"
 license = { text = "Apache-2.0" }
 authors = [ { name = "Orest Tokovenko", email = "hi@oresttokovenko.com" } ]
 requires-python = ">=3.12,<3.13"
