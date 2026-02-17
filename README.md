@@ -3,6 +3,7 @@
 [![PyPI](https://img.shields.io/pypi/v/battery-tool)](https://pypi.org/project/battery-tool/)
 [![Python](https://img.shields.io/pypi/pyversions/battery-tool)](https://pypi.org/project/battery-tool/)
 [![License](https://img.shields.io/pypi/l/battery-tool)](https://github.com/oresttokovenko/BatteryTool/blob/main/LICENSE)
+[![C23](https://img.shields.io/badge/C-C23-blue)](https://en.cppreference.com/w/c/23)
 [![macOS](https://img.shields.io/badge/platform-macOS-lightgrey)](https://github.com/oresttokovenko/BatteryTool)
 
 BatteryTool cycles your battery on autopilot - discharge to 5%, charge to 95%, check health, repeat until you cross the 80% threshold. Leave it plugged in, go about your life, come back to a warranty-eligible battery. I wrote about the whole process [here](https://oresttokovenko.com/blog/macbook-battery-replacement/).
