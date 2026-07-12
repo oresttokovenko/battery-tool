@@ -33,6 +33,10 @@ def main(
 
     battery_info: BatteryInfo = lib.FetchBatteryInfo()
 
+    if battery_info.max_capacity <= 0 or battery_info.design_capacity <= 0:
+        logger.error("invalid_battery_data", message="Failed to read valid battery capacity from IOKit")
+        return
+
     battery_percentage = battery_info.current_capacity / battery_info.max_capacity * 100
     battery_health = battery_info.max_capacity / battery_info.design_capacity * 100
 

@@ -55,14 +55,28 @@ BatteryInfo FetchBatteryInfo(void) {
     return info;
   }
 
-  GetDictInt(properties, kCurrentCapacityKey, &info.current_capacity,
-             kCFNumberIntType);
-  GetDictInt(properties, kMaxCapacityKey, &info.max_capacity, kCFNumberIntType);
-  GetDictInt(properties, kDesignCapacityKey, &info.design_capacity,
-             kCFNumberIntType);
-  GetDictInt(properties, kCycleCountKey, &info.cycle_count, kCFNumberIntType);
-  GetDictBool(properties, kIsChargingKey, &info.is_charging);
-  GetDictBool(properties, kExternalConnectedKey, &info.is_plugged_in);
+  if (!GetDictInt(properties, kCurrentCapacityKey, &info.current_capacity,
+                  kCFNumberIntType))
+    fprintf(stderr, "batterytool: failed to read IOKit key '%s'\n",
+            kCurrentCapacityKey);
+  if (!GetDictInt(properties, kMaxCapacityKey, &info.max_capacity,
+                  kCFNumberIntType))
+    fprintf(stderr, "batterytool: failed to read IOKit key '%s'\n",
+            kMaxCapacityKey);
+  if (!GetDictInt(properties, kDesignCapacityKey, &info.design_capacity,
+                  kCFNumberIntType))
+    fprintf(stderr, "batterytool: failed to read IOKit key '%s'\n",
+            kDesignCapacityKey);
+  if (!GetDictInt(properties, kCycleCountKey, &info.cycle_count,
+                  kCFNumberIntType))
+    fprintf(stderr, "batterytool: failed to read IOKit key '%s'\n",
+            kCycleCountKey);
+  if (!GetDictBool(properties, kIsChargingKey, &info.is_charging))
+    fprintf(stderr, "batterytool: failed to read IOKit key '%s'\n",
+            kIsChargingKey);
+  if (!GetDictBool(properties, kExternalConnectedKey, &info.is_plugged_in))
+    fprintf(stderr, "batterytool: failed to read IOKit key '%s'\n",
+            kExternalConnectedKey);
 
   CFRelease(properties);
   return info;
