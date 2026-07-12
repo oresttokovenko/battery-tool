@@ -8,13 +8,13 @@ static const char kAppleSmartBattery[] = "AppleSmartBattery";
 
 // AppleSmartBattery dictionary keys
 static const char kCurrentCapacityKey[] = "AppleRawCurrentCapacity";
-static const char kMaxCapacityKey[] = "AppleRawMaxCapacity";
+static const char kMaxCapacityKey[] = "NominalChargeCapacity";
 static const char kDesignCapacityKey[] = "DesignCapacity";
 static const char kCycleCountKey[] = "CycleCount";
 static const char kIsChargingKey[] = "IsCharging";
 static const char kExternalConnectedKey[] = "ExternalConnected";
 
-static bool GetDictInt(CFDictionaryRef dict, const char *key, void *out,
+static bool GetDictInt(CFDictionaryRef dict, const char* key, void* out,
                        CFNumberType type) {
   CFStringRef cf_key =
       CFStringCreateWithCString(NULL, key, kCFStringEncodingUTF8);
@@ -26,7 +26,7 @@ static bool GetDictInt(CFDictionaryRef dict, const char *key, void *out,
   return CFNumberGetValue(ref, type, out);
 }
 
-static bool GetDictBool(CFDictionaryRef dict, const char *key, bool *out) {
+static bool GetDictBool(CFDictionaryRef dict, const char* key, bool* out) {
   CFStringRef cf_key =
       CFStringCreateWithCString(NULL, key, kCFStringEncodingUTF8);
   CFBooleanRef ref = CFDictionaryGetValue(dict, cf_key);
