@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.4](https://github.com/oresttokovenko/battery-tool/compare/v0.2.3...v0.2.4) (2026-07-12)
+
+
+### Bug Fixes
+
+* check IOKit read results and guard against zero-capacity divisions ([11a908c](https://github.com/oresttokovenko/battery-tool/commit/11a908ca5d47f5c0b3454fdb241251b4834f6800))
+* check IOKit read results and guard against zero-capacity divisions ([c8d3fd1](https://github.com/oresttokovenko/battery-tool/commit/c8d3fd196155989e2dcf77a78797a3a969b8f1fe))
+
 ## [0.2.3](https://github.com/oresttokovenko/battery-tool/compare/v0.2.2...v0.2.3) (2026-02-16)
 
 
