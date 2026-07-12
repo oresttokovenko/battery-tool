@@ -24,6 +24,11 @@ def legacy_loop(
     try:
         while True:
             battery_info = fetch_battery_info()
+
+            if battery_info.max_capacity <= 0 or battery_info.design_capacity <= 0:
+                logger.error("invalid_battery_data", message="Failed to read valid battery capacity from IOKit")
+                break
+
             battery_percentage = battery_info.current_capacity / battery_info.max_capacity * 100
             battery_health = battery_info.max_capacity / battery_info.design_capacity * 100
 
@@ -81,6 +86,11 @@ def tahoe_loop(
     try:
         while True:
             battery_info = fetch_battery_info()
+
+            if battery_info.max_capacity <= 0 or battery_info.design_capacity <= 0:
+                logger.error("invalid_battery_data", message="Failed to read valid battery capacity from IOKit")
+                break
+
             battery_percentage = battery_info.current_capacity / battery_info.max_capacity * 100
             battery_health = battery_info.max_capacity / battery_info.design_capacity * 100
 
