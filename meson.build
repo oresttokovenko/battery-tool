@@ -1,7 +1,7 @@
 project(
   'batterytool',
   'c',
-  version: '0.2.1',
+  version: '0.2.4',
   license: 'Apache-2.0',
   meson_version: '>=1.2.0',
   default_options: [
