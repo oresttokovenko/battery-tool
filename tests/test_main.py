@@ -30,7 +30,7 @@ def run_tahoe():
 
 
 def test_legacy_breaks_at_target_health(hw):
-    """Loop exits when battery health drops to target; only the finally-block re-enable is written."""
+    """Loop exits when battery health drops to target; only the finally-block re-enable is written"""
     hw.set_keys(LEGACY_KEYS)
     hw.script(TARGET_ROW)
 
@@ -40,7 +40,7 @@ def test_legacy_breaks_at_target_health(hw):
 
 
 def test_legacy_disables_charging_above_max(hw):
-    """Charging disabled when battery percentage exceeds max_charge."""
+    """Charging disabled when battery percentage exceeds max_charge"""
     hw.set_keys(LEGACY_KEYS)
     hw.script((96, 100, 100, 10, 1, 1), TARGET_ROW)
 
@@ -50,7 +50,7 @@ def test_legacy_disables_charging_above_max(hw):
 
 
 def test_legacy_enables_charging_below_min(hw):
-    """Charging re-enabled when battery drops below min_charge."""
+    """Charging re-enabled when battery drops below min_charge"""
     hw.set_keys(LEGACY_KEYS)
     hw.script((96, 100, 100, 10, 1, 1), (4, 100, 100, 10, 0, 1), TARGET_ROW)
 
@@ -60,7 +60,7 @@ def test_legacy_enables_charging_below_min(hw):
 
 
 def test_legacy_invalid_battery_data_still_reenables(hw):
-    """Zero capacities break the loop and the finally block re-enables charging."""
+    """Zero capacities break the loop and the finally block re-enables charging"""
     hw.set_keys(LEGACY_KEYS)
     hw.script((0, 0, 0, 0, 0, 0))
 
@@ -91,10 +91,10 @@ def test_tahoe_disables_charging_above_max(hw):
 
 
 def test_tahoe_falls_back_to_ch0j_without_chie(hw):
-    """On Tahoe machines without CHIE, discharge control falls back to CH0J.
+    """On Tahoe machines without CHIE, discharge control falls back to CH0J
 
     The fake rejects the CHIE write like real hardware (unknown key), so the
-    wrapper returns -1 and the Python fallback chain runs for real."""
+    wrapper returns -1 and the Python fallback chain runs for real"""
     hw.set_keys(TAHOE_FALLBACK_KEYS)
     hw.script((96, 100, 100, 10, 1, 1), TARGET_ROW)
 
