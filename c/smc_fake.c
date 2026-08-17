@@ -43,6 +43,20 @@ static void hex_to_bytes(const char* hex, unsigned char* bytes, UInt32 len) {
   }
 }
 
+/* Parse one "KEY <byte-size> <hex-value>" line from smc_keys */
+static int parse_key_line(const char* line, char* key_out,
+                          unsigned int* size_out, char* value_out) {
+  return sscanf(line, "%7s %u %64s", key_out, size_out, value_out) == 3;
+}
+
+static void write_file(const char* path, const char* contents) {
+  FILE* f = fopen(path, "w");
+  if (f != NULL) {
+    fputs(contents, f);
+    fclose(f);
+  }
+}
+
 /* Look up a key in smc_keys. Returns 1 and fills hex value + size if found. */
 static int lookup_key(const char* key, char* hex_out, UInt32* size_out) {
   if (getenv("BATTERYTOOL_FAKE_DIR") == NULL) {
@@ -61,7 +75,7 @@ static int lookup_key(const char* key, char* hex_out, UInt32* size_out) {
   unsigned int file_size;
   int found = 0;
   while (fgets(line, sizeof(line), f) != NULL) {
-    if (sscanf(line, "%7s %u %64s", file_key, &file_size, file_value) == 3 &&
+    if (parse_key_line(line, file_key, &file_size, file_value) &&
         strncmp(file_key, key, 4) == 0) {
       strncpy(hex_out, file_value, MAX_VALUE_HEX);
       hex_out[MAX_VALUE_HEX] = '\0';
@@ -90,7 +104,7 @@ static void update_key(const char* key, const char* hex) {
   unsigned int file_size;
   size_t used = 0;
   while (fgets(line, sizeof(line), f) != NULL) {
-    if (sscanf(line, "%7s %u %64s", file_key, &file_size, file_value) == 3 &&
+    if (parse_key_line(line, file_key, &file_size, file_value) &&
         strncmp(file_key, key, 4) == 0) {
       used += snprintf(contents + used, sizeof(contents) - used, "%s %u %s\n",
                        file_key, file_size, hex);
@@ -100,11 +114,15 @@ static void update_key(const char* key, const char* hex) {
   }
   fclose(f);
 
-  f = fopen(path, "w");
-  if (f != NULL) {
-    fputs(contents, f);
-    fclose(f);
+  write_file(path, contents);
+}
+
+/* The wrapper packs the 4 ASCII key chars big-endian into input.key */
+static void unpack_key(UInt32 packed, char* key_out) {
+  for (int i = 0; i < 4; i++) {
+    key_out[i] = (char)(packed >> (24 - (8 * i)));
   }
+  key_out[4] = '\0';
 }
 
 /* The listener: append one "KEY=<hex>" line to smc_writes.log. */
@@ -158,12 +176,8 @@ kern_return_t SMCCall2(int index, SMCKeyData_t* input_structure,
     return kIOReturnError;
   }
 
-  /* The wrapper packs the 4 ASCII key chars big-endian into input.key. */
   char key[5];
-  for (int i = 0; i < 4; i++) {
-    key[i] = (char)(input_structure->key >> (24 - (8 * i)));
-  }
-  key[4] = '\0';
+  unpack_key(input_structure->key, key);
 
   char hex[MAX_VALUE_HEX + 1];
   bytes_to_hex(input_structure->bytes, input_structure->keyInfo.dataSize, hex);
