@@ -36,7 +36,7 @@ class FakeHardware:
     def writes(self):
         """The listener log: every successful SMC write as 'KEY=hexvalue'"""
         log = self.dir / "smc_writes.log"
-        return log.read_text().splitlines() if log.exists() else []
+        return tuple(log.read_text().splitlines()) if log.exists() else ()
 
 
 @pytest.fixture

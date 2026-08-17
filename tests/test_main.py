@@ -12,10 +12,10 @@ from batterytool.main import main
 # Loop polls until health <= target, so every script ends on this row
 TARGET_ROW = (79, 79, 100, 10, 1, 1)  # health = 79%
 
-LEGACY_ENABLE = ["CH0B=00", "CH0C=00", "CH0I=00"]
-LEGACY_DISABLE = ["CH0B=02", "CH0C=02", "CH0I=01"]
-TAHOE_ENABLE = ["CHTE=00000000", "CHIE=00"]
-TAHOE_DISABLE = ["CHTE=01000000", "CHIE=08"]
+LEGACY_ENABLE = ("CH0B=00", "CH0C=00", "CH0I=00")
+LEGACY_DISABLE = ("CH0B=02", "CH0C=02", "CH0I=01")
+TAHOE_ENABLE = ("CHTE=00000000", "CHIE=00")
+TAHOE_DISABLE = ("CHTE=01000000", "CHIE=08")
 
 
 def run_legacy():
@@ -100,12 +100,12 @@ def test_tahoe_falls_back_to_ch0j_without_chie(hw):
 
     run_tahoe()
 
-    assert hw.writes() == [
+    assert hw.writes() == (
         "CHTE=01000000",
         "CH0J=01",  # CHIE write failed, fallback fired
         "CHTE=00000000",
         "CH0J=00",
-    ]
+    )
 
 
 def test_tahoe_invalid_battery_data_still_reenables(hw):
@@ -185,7 +185,7 @@ def test_cli_status_prints_and_writes_nothing(hw, capfd):
     events = [e for e in read_stderr_json(capfd) if e["event"] == "battery_status"]
     assert len(events) == 1
     assert events[0]["battery_percentage"] == 80.0
-    assert hw.writes() == []
+    assert hw.writes() == ()
 
 
 @needs_apple_silicon
@@ -216,4 +216,4 @@ def test_cli_refuses_to_run_unplugged(hw, capfd):
 
     events = read_stderr_json(capfd)
     assert any(e["event"] == "charger_not_connected" for e in events)
-    assert hw.writes() == []
+    assert hw.writes() == ()
