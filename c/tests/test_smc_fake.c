@@ -158,26 +158,20 @@ static void TestMissingBatteryScriptReturnsZeros(void** state) {
   assert_int_equal(info.design_capacity, 0);
 }
 
+// Every test below runs with a fresh fake-hardware dir via per-test fixtures.
+#define FAKE_TEST(fn) \
+  cmocka_unit_test_setup_teardown(fn, SetupFakeDir, TeardownFakeDir)
+
 int main(void) {
   const struct CMUnitTest kTests[] = {
-      // Per-test fixtures: every test gets a fresh fake-hardware dir.
-      cmocka_unit_test_setup_teardown(TestInertWithoutDir, SetupFakeDir,
-                                      TeardownFakeDir),
-      cmocka_unit_test_setup_teardown(TestReadUnknownKeyFails, SetupFakeDir,
-                                      TeardownFakeDir),
-      cmocka_unit_test_setup_teardown(TestWriteReadRoundTrip, SetupFakeDir,
-                                      TeardownFakeDir),
-      cmocka_unit_test_setup_teardown(TestWriteIsLoggedForListener,
-                                      SetupFakeDir, TeardownFakeDir),
-      cmocka_unit_test_setup_teardown(TestWriteUnknownKeyFailsAndIsNotLogged,
-                                      SetupFakeDir, TeardownFakeDir),
-      cmocka_unit_test_setup_teardown(TestWriteWrongSizeFails, SetupFakeDir,
-                                      TeardownFakeDir),
-      cmocka_unit_test_setup_teardown(
-          TestBatteryScriptYieldsRowsInOrderThenRepeatsLast, SetupFakeDir,
-          TeardownFakeDir),
-      cmocka_unit_test_setup_teardown(TestMissingBatteryScriptReturnsZeros,
-                                      SetupFakeDir, TeardownFakeDir),
+      FAKE_TEST(TestInertWithoutDir),
+      FAKE_TEST(TestReadUnknownKeyFails),
+      FAKE_TEST(TestWriteReadRoundTrip),
+      FAKE_TEST(TestWriteIsLoggedForListener),
+      FAKE_TEST(TestWriteUnknownKeyFailsAndIsNotLogged),
+      FAKE_TEST(TestWriteWrongSizeFails),
+      FAKE_TEST(TestBatteryScriptYieldsRowsInOrderThenRepeatsLast),
+      FAKE_TEST(TestMissingBatteryScriptReturnsZeros),
   };
 
   // No 'hardware' suite tag: these run everywhere, including CI.
