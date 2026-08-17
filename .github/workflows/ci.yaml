@@ -56,8 +56,9 @@ jobs:
           version: "21.1.8"
 
       # New C sources must be added to this list (third-party smc.c/smc.h stay excluded)
+      # -isysroot is required: the prebuilt LLVM can't auto-locate the macOS SDK
       - name: Lint C code
-        run: clang-tidy c/power_sources.c c/power_sources_fake.c c/smc_fake.c c/smc_wrapper.c c/power_sources.h c/smc_wrapper.h
+        run: clang-tidy --extra-arg=-isysroot --extra-arg="$(xcrun --show-sdk-path)" c/power_sources.c c/power_sources_fake.c c/smc_fake.c c/smc_wrapper.c c/power_sources.h c/smc_wrapper.h
 
       - name: Run C tests
         run: uv run nox -s c_test
