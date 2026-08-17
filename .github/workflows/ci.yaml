@@ -32,6 +32,19 @@ jobs:
       - name: Run Python tests
         run: uv run nox -s tests
 
+      - name: Install C tooling
+        run: brew bundle
+
+      - name: Check C formatting
+        run: |
+          c_sources=$(find c -maxdepth 1 \( -name '*.c' -o -name '*.h' \) ! -name 'smc.c' ! -name 'smc.h' | tr '\n' ' ')
+          "$(brew --prefix llvm)/bin/clang-format" --dry-run --Werror $c_sources
+
+      - name: Lint C code
+        run: |
+          c_sources=$(find c -maxdepth 1 \( -name '*.c' -o -name '*.h' \) ! -name 'smc.c' ! -name 'smc.h' | tr '\n' ' ')
+          "$(brew --prefix llvm)/bin/clang-tidy" $c_sources
+
       - name: Run C tests
         run: uv run nox -s c_test
 
