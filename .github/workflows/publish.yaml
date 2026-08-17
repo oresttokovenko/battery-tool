@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/batterytool
+      url: https://pypi.org/p/battery-tool
     permissions:
       id-token: write
     steps:
