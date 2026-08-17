@@ -308,7 +308,7 @@ kern_return_t SMCGetKeyInfo(UInt32 key, SMCKeyData_keyInfo_t *keyInfo,
   }
 
   if (i == g_keyInfoCacheCount) {
-    // Not in cache, must look it up.
+    // Not in cache, must look it up
     memset(&inputStructure, 0, sizeof(inputStructure));
     memset(&outputStructure, 0, sizeof(outputStructure));
 

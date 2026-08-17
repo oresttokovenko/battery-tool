@@ -1,9 +1,9 @@
 """
 SMC Learnings
 
-The System Management Controller (SMC) controls most power functions on modern Macs.
+The System Management Controller (SMC) controls most power functions on modern Macs
 Battery charging is one of the functions controlled by the SMC. By manipulating the SMC keys,
-I can control battery charging on the Mac.
+I can control battery charging on the Mac
 
 I found a good discussion on the SMC keys that control battery charging
 on this GitHub issue: https://github.com/zackelia/bclm/issues/20
@@ -23,7 +23,7 @@ Legacy keys (pre-macOS 15.7):
 
 Tahoe keys (macOS 15.7+):
 
-  Apple's firmware update replaced the legacy keys with a new set.
+  Apple's firmware update replaced the legacy keys with a new set
   See: https://github.com/actuallymentor/battery/pull/388
 
   CHTE replaces CH0B/CH0C for charging control
@@ -39,17 +39,24 @@ Tahoe keys (macOS 15.7+):
           - Writing "01" to CH0J enables discharge
 
   Not all Tahoe machines expose the same keys. I detect which keys
-  are available at runtime by attempting to read each one.
+  are available at runtime by attempting to read each one
 """
 
+import os
 import platform
 
 from batterytool.constants import SMCKeys, SMCValues
-from batterytool.iokit_wrapper import ffi, lib
+
+# BATTERYTOOL_FAKE swaps in the file-backed fake backend (see c/smc_fake.c),
+# so the whole package can run in tests/CI/VMs without touching the SMC
+if os.environ.get("BATTERYTOOL_FAKE"):
+    from batterytool.iokit_wrapper_fake import ffi, lib
+else:
+    from batterytool.iokit_wrapper import ffi, lib
 
 
 def fetch_battery_info():
-    """Fetch current battery info from IOKit via CFFI."""
+    """Fetch current battery info from IOKit via CFFI"""
     return lib.FetchBatteryInfo()
 
 

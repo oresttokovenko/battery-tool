@@ -86,6 +86,7 @@ indent = 2
 [tool.pytest]
 ini_options.log_level = "WARNING"
 ini_options.log_cli = false
+ini_options.markers = [ "apple_silicon: tests that only make sense on Apple Silicon Macs" ]
 
 [tool.basedpyright]
 pythonVersion = "3.12"

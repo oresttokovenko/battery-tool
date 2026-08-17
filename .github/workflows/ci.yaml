@@ -5,6 +5,23 @@ on:
     branches: [main]
 
 jobs:
+  # clang-format is pure syntax, so it runs cheaply on Linux.
+  # (clang-tidy and the C tests must stay on macOS: the sources include
+  # IOKit headers and meson.build errors out on non-Darwin hosts.)
+  c-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check C formatting
+        uses: jidicula/clang-format-action@v4.18.0
+        with:
+          clang-format-version: "22"
+          check-path: c
+          # mirror the justfile: top-level c/ only, third-party smc.c/smc.h excluded
+          include-regex: "c/[^/]+\\.(c|h)$"
+          exclude-regex: "smc\\.(c|h)$"
+
   checks:
     runs-on: macos-latest
     steps:
@@ -32,11 +49,24 @@ jobs:
       - name: Run Python tests
         run: uv run nox -s tests
 
+      # latest prebuilt LLVM available for darwin/arm64; warnings only, never fails the job
+      - name: Install LLVM and Clang
+        uses: KyleMayes/install-llvm-action@v2
+        with:
+          version: "21.1.8"
+
+      # New C sources must be added to this list (third-party smc.c/smc.h stay excluded)
+      # -isysroot is required: the prebuilt LLVM can't auto-locate the macOS SDK
+      - name: Lint C code
+        run: clang-tidy --extra-arg=-isysroot --extra-arg="$(xcrun --show-sdk-path)" c/power_sources.c c/power_sources_fake.c c/smc_fake.c c/smc_wrapper.c c/power_sources.h c/smc_wrapper.h
+
       - name: Run C tests
         run: uv run nox -s c_test
 
+      # /usr/bin explicitly: install-llvm-action puts its clang first on PATH,
+      # and meson.build requires Apple Clang
       - name: Build wheel
         run: uv build --wheel
         env:
-          CC: clang
-          CXX: clang++
+          CC: /usr/bin/clang
+          CXX: /usr/bin/clang++

@@ -13,7 +13,7 @@
 
 #include "smc.h"
 
-int SmcReadKey(const char *key, char *value, int value_size) {
+int SmcReadKey(const char* key, char* value, int value_size) {
   io_connect_t conn;
   kern_return_t result;
   SMCVal_t val;
@@ -43,7 +43,7 @@ int SmcReadKey(const char *key, char *value, int value_size) {
   return 0;
 }
 
-int SmcWriteKey(const char *key, const char *value) {
+int SmcWriteKey(const char* key, const char* value) {
   io_connect_t conn;
   kern_return_t result;
   SMCVal_t read_val;

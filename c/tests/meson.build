@@ -28,3 +28,19 @@ test_smc_wrapper = executable(
 )
 
 test('smc_wrapper tests', test_smc_wrapper, suite: 'hardware')
+
+test_smc_fake = executable(
+  'test_smc_fake',
+  'test_smc_fake.c',
+  '../smc_fake.c',
+  '../smc_wrapper.c',
+  '../power_sources_fake.c',
+  dependencies: [
+    cmocka_dep,
+    dependency('appleframeworks', modules: ['IOKit', 'CoreFoundation']),
+  ],
+  include_directories: include_directories('..'),
+)
+
+# No 'hardware' suite: safe to run anywhere, including CI and VMs
+test('smc_fake tests', test_smc_fake)

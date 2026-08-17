@@ -5,7 +5,7 @@ import structlog
 
 
 def setup_logging(log_file: Path | None = None) -> structlog.stdlib.BoundLogger:
-    """Configure structlog with JSON output via stdlib logging."""
+    """Configure structlog with JSON output via stdlib logging"""
     structlog.configure(
         processors=[
             structlog.processors.add_log_level,
