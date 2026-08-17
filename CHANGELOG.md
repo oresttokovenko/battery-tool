@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.0](https://github.com/oresttokovenko/battery-tool/compare/v0.2.4...v0.3.0) (2026-08-17)
+
+
+### Features
+
+* add file-backed fake SMC backend for sandboxed testing ([3639bac](https://github.com/oresttokovenko/battery-tool/commit/3639baca23fad8b6f66f58b9e6dba158a743bb07))
+* add file-backed fake SMC backend for sandboxed testing ([2af9e17](https://github.com/oresttokovenko/battery-tool/commit/2af9e1707a201533f5d230f9232b4cdc3aa6772b))
+
+
+### Documentation
+
+* explain the fake backend testing model in CONTRIBUTING ([2fd8bdc](https://github.com/oresttokovenko/battery-tool/commit/2fd8bdc5229e394455d33b161d8c1d1879483ea9))
+* replace em dashes and arrows with plainer punctuation ([1f5b58a](https://github.com/oresttokovenko/battery-tool/commit/1f5b58a81cc5e4678b3ab3f5e80d3d6497694226))
+
 ## [0.2.4](https://github.com/oresttokovenko/battery-tool/compare/v0.2.3...v0.2.4) (2026-07-12)
 
 
