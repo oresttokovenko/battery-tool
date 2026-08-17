@@ -1,5 +1,5 @@
 /*
- * File-backed fake of the SMC layer (smc.h) for sandboxed testing.
+ * File-backed fake of the SMC layer (smc.h) for sandboxed testing
  *
  * State lives in $BATTERYTOOL_FAKE_DIR so tests can steer hardware behavior
  * from outside the process:
@@ -7,13 +7,13 @@
  *   smc_keys        one "KEY <byte-size> <hex-value>" line per key; the set
  *                   of SMC keys that "exist" and their current values
  *   smc_writes.log  append-only listener log, "KEY=<hex-value>" per
- *                   successful write. Tests assert on this file.
+ *                   successful write. Tests assert on this file
  *
  * With BATTERYTOOL_FAKE_DIR unset the fake is inert: SMCOpen fails and every
- * wrapper call returns -1 without touching the filesystem or hardware.
+ * wrapper call returns -1 without touching the filesystem or hardware
  *
  * The directory is re-read from the environment on every call, so tests in
- * the same process can each point the fake at their own tmp dir.
+ * the same process can each point the fake at their own tmp dir
  */
 
 #include <limits.h>

@@ -17,7 +17,6 @@
 #include "power_sources.h"
 #include "smc_wrapper.h"
 
-// Each test gets a fresh fake-hardware dir via the group fixtures.
 static char test_dir[PATH_MAX];
 
 static int SetupFakeDir(void** state) {
@@ -115,7 +114,7 @@ static void TestWriteUnknownKeyFailsAndIsNotLogged(void** state) {
 
   WriteFile("smc_keys", "CHTE 4 00000000\n");
 
-  // CHIE is not in the key store, mirroring a Tahoe Mac without it.
+  // CHIE is not in the key store, mirroring a Tahoe Mac without it
   assert_int_equal(SmcWriteKey("CHIE", "08"), -1);
 
   char path[PATH_MAX];
@@ -128,7 +127,7 @@ static void TestWriteWrongSizeFails(void** state) {
 
   WriteFile("smc_keys", "CH0B 1 00\n");
 
-  // CH0B holds 1 byte; a 2-byte value must be rejected like the real wrapper.
+  // CH0B holds 1 byte; a 2-byte value must be rejected like the real wrapper
   assert_int_equal(SmcWriteKey("CH0B", "0002"), -1);
 }
 
@@ -158,7 +157,7 @@ static void TestMissingBatteryScriptReturnsZeros(void** state) {
   assert_int_equal(info.design_capacity, 0);
 }
 
-// Every test below runs with a fresh fake-hardware dir via per-test fixtures.
+// Every test below runs with a fresh fake-hardware dir via per-test fixtures
 #define FAKE_TEST(fn) \
   cmocka_unit_test_setup_teardown(fn, SetupFakeDir, TeardownFakeDir)
 
@@ -174,6 +173,6 @@ int main(void) {
       FAKE_TEST(TestMissingBatteryScriptReturnsZeros),
   };
 
-  // No 'hardware' suite tag: these run everywhere, including CI.
+  // No 'hardware' suite tag: these run everywhere, including CI
   return cmocka_run_group_tests(kTests, NULL, NULL);
 }

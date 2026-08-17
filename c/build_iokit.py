@@ -24,8 +24,8 @@ ffibuilder.cdef("""
     int SmcReadKey(const char *key, char *value, int value_size);
 """)
 
-# Module name must match the final extension filename (it becomes PyInit_<name>).
-# The fake backend build passes 'iokit_wrapper_fake' as argv[2].
+# Module name must match the final extension filename (it becomes PyInit_<name>)
+# The fake backend build passes 'iokit_wrapper_fake' as argv[2]
 module_name = sys.argv[2] if len(sys.argv) > 2 else "iokit_wrapper"
 
 ffibuilder.set_source(

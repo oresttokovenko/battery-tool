@@ -2,7 +2,7 @@ import logging
 import os
 
 # Must be set before any batterytool import so battery.py binds the
-# file-backed fake backend instead of the real IOKit extension.
+# file-backed fake backend instead of the real IOKit extension
 os.environ["BATTERYTOOL_FAKE"] = "1"
 
 import pytest  # noqa: E402
@@ -10,7 +10,7 @@ import structlog  # noqa: E402
 
 LEGACY_KEYS = {"CH0B": "00", "CH0C": "00", "CH0I": "00"}
 TAHOE_KEYS = {"CHTE": "00000000", "CHIE": "08"}
-# Tahoe machine without CHIE, forcing the CH0J fallback path.
+# Tahoe machine without CHIE, forcing the CH0J fallback path
 TAHOE_FALLBACK_KEYS = {"CHTE": "00000000", "CH0J": "00"}
 
 

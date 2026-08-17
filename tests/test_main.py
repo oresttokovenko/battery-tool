@@ -9,7 +9,7 @@ from batterytool.logging import setup_logging
 from batterytool.loop import legacy_loop, tahoe_loop
 from batterytool.main import main
 
-# Loop polls until health <= target, so every script ends on this row.
+# Loop polls until health <= target, so every script ends on this row
 TARGET_ROW = (79, 79, 100, 10, 1, 1)  # health = 79%
 
 LEGACY_ENABLE = ["CH0B=00", "CH0C=00", "CH0I=00"]

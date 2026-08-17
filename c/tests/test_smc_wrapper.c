@@ -12,8 +12,8 @@
 
 #include "smc_wrapper.h"
 
-// Read a well-known SMC key that every Mac exposes.
-// "#KEY" returns a 4-byte big-endian uint32 with the total number of keys.
+// Read a well-known SMC key that every Mac exposes
+// "#KEY" returns a 4-byte big-endian uint32 with the total number of keys
 static void TestSmcReadKey(void** state) {
   (void)state;
 
@@ -23,8 +23,8 @@ static void TestSmcReadKey(void** state) {
   int rc = SmcReadKey("#KEY", buf, sizeof(buf));
   assert_int_equal(rc, 0);
 
-  // The value is a 4-byte big-endian integer representing total key count.
-  // Any real Mac will have at least one key, so at least one byte is nonzero.
+  // The value is a 4-byte big-endian integer representing total key count
+  // Any real Mac will have at least one key, so at least one byte is nonzero
   int all_zero = 1;
   for (int i = 0; i < 4; i++) {
     if (buf[i] != 0) {

@@ -1,7 +1,7 @@
 # CFFI + meson integration
 
 # CFFI doesn't have native meson support, so we use custom_target()
-# to generate C wrapper code, then compile it with our sources.
+# to generate C wrapper code, then compile it with our sources
 # Approach borrowed from: https://github.com/grimme-lab/xtb-python
 
 # Run CFFI ffibuilder to generate C wrapper code
@@ -27,10 +27,10 @@ py.extension_module(
   subdir: 'batterytool',
 )
 
-# Same extension built against the file-backed fakes: never touches IOKit.
-# Imported instead of the real one when BATTERYTOOL_FAKE is set.
+# Same extension built against the file-backed fakes: never touches IOKit
+# Imported instead of the real one when BATTERYTOOL_FAKE is set
 # Needs its own CFFI codegen pass because the module name is baked into the
-# generated PyInit function.
+# generated PyInit function
 cffi_generated_fake = custom_target(
   'iokit_cffi_gen_fake',
   output: '_iokit_wrapper_fake.c',

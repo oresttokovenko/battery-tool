@@ -42,5 +42,5 @@ test_smc_fake = executable(
   include_directories: include_directories('..'),
 )
 
-# No 'hardware' suite: safe to run anywhere, including CI and VMs.
+# No 'hardware' suite: safe to run anywhere, including CI and VMs
 test('smc_fake tests', test_smc_fake)

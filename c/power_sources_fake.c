@@ -1,5 +1,5 @@
 /*
- * File-backed fake of FetchBatteryInfo for sandboxed testing.
+ * File-backed fake of FetchBatteryInfo for sandboxed testing
  *
  * Reads $BATTERYTOOL_FAKE_DIR/battery_script, one whitespace-separated row
  * per line:
@@ -7,10 +7,10 @@
  *   <current_mAh> <max_mAh> <design_mAh> <cycle_count> <is_charging> <is_plugged_in>
  *
  * Each call consumes the row at the position stored in battery_cursor
- * (created on first call), so a test can script a sequence of readings.
+ * (created on first call), so a test can script a sequence of readings
  * Past the last row, the last row repeats. With BATTERYTOOL_FAKE_DIR unset
  * or no script file, returns all zeros (callers treat that as invalid data,
- * never as a real battery).
+ * never as a real battery)
  */
 
 #include <limits.h>
