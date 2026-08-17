@@ -1,5 +1,6 @@
 import logging
 import os
+from types import MappingProxyType
 
 # Must be set before any batterytool import so battery.py binds the
 # file-backed fake backend instead of the real IOKit extension
@@ -8,10 +9,10 @@ os.environ["BATTERYTOOL_FAKE"] = "1"
 import pytest  # noqa: E402
 import structlog  # noqa: E402
 
-LEGACY_KEYS = {"CH0B": "00", "CH0C": "00", "CH0I": "00"}
-TAHOE_KEYS = {"CHTE": "00000000", "CHIE": "08"}
+LEGACY_KEYS = MappingProxyType({"CH0B": "00", "CH0C": "00", "CH0I": "00"})
+TAHOE_KEYS = MappingProxyType({"CHTE": "00000000", "CHIE": "08"})
 # Tahoe machine without CHIE, forcing the CH0J fallback path
-TAHOE_FALLBACK_KEYS = {"CHTE": "00000000", "CH0J": "00"}
+TAHOE_FALLBACK_KEYS = MappingProxyType({"CHTE": "00000000", "CH0J": "00"})
 
 
 class FakeHardware:
