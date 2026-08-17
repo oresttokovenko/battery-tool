@@ -25,18 +25,18 @@
 
 #define MAX_VALUE_HEX 64
 
-static void fake_path(char *buf, size_t size, const char *file) {
+static void fake_path(char* buf, size_t size, const char* file) {
   snprintf(buf, size, "%s/%s", getenv("BATTERYTOOL_FAKE_DIR"), file);
 }
 
-static void bytes_to_hex(const unsigned char *bytes, UInt32 len, char *out) {
+static void bytes_to_hex(const unsigned char* bytes, UInt32 len, char* out) {
   for (UInt32 i = 0; i < len; i++) {
     sprintf(out + i * 2, "%02x", bytes[i]);
   }
   out[len * 2] = '\0';
 }
 
-static void hex_to_bytes(const char *hex, unsigned char *bytes, UInt32 len) {
+static void hex_to_bytes(const char* hex, unsigned char* bytes, UInt32 len) {
   for (UInt32 i = 0; i < len; i++) {
     char pair[3] = {hex[i * 2], hex[i * 2 + 1], '\0'};
     bytes[i] = (unsigned char)strtol(pair, NULL, 16);
@@ -44,7 +44,7 @@ static void hex_to_bytes(const char *hex, unsigned char *bytes, UInt32 len) {
 }
 
 /* Look up a key in smc_keys. Returns 1 and fills hex value + size if found. */
-static int lookup_key(const char *key, char *hex_out, UInt32 *size_out) {
+static int lookup_key(const char* key, char* hex_out, UInt32* size_out) {
   if (getenv("BATTERYTOOL_FAKE_DIR") == NULL) {
     return 0;
   }
@@ -52,7 +52,7 @@ static int lookup_key(const char *key, char *hex_out, UInt32 *size_out) {
   char path[PATH_MAX];
   fake_path(path, sizeof(path), "smc_keys");
 
-  FILE *f = fopen(path, "r");
+  FILE* f = fopen(path, "r");
   if (f == NULL) {
     return 0;
   }
@@ -76,11 +76,11 @@ static int lookup_key(const char *key, char *hex_out, UInt32 *size_out) {
 
 /* Rewrite smc_keys with a new value for key. Key must exist (the wrapper
  * reads before writing, so SMCCall2 never sees unknown keys). */
-static void update_key(const char *key, const char *hex) {
+static void update_key(const char* key, const char* hex) {
   char path[PATH_MAX];
   fake_path(path, sizeof(path), "smc_keys");
 
-  FILE *f = fopen(path, "r");
+  FILE* f = fopen(path, "r");
   if (f == NULL) {
     return;
   }
@@ -108,18 +108,18 @@ static void update_key(const char *key, const char *hex) {
 }
 
 /* The listener: append one "KEY=<hex>" line to smc_writes.log. */
-static void log_write(const char *key, const char *hex) {
+static void log_write(const char* key, const char* hex) {
   char path[PATH_MAX];
   fake_path(path, sizeof(path), "smc_writes.log");
 
-  FILE *f = fopen(path, "a");
+  FILE* f = fopen(path, "a");
   if (f != NULL) {
     fprintf(f, "%s=%s\n", key, hex);
     fclose(f);
   }
 }
 
-kern_return_t SMCOpen(io_connect_t *conn) {
+kern_return_t SMCOpen(io_connect_t* conn) {
   if (getenv("BATTERYTOOL_FAKE_DIR") == NULL) {
     return kIOReturnError;
   }
@@ -132,7 +132,7 @@ kern_return_t SMCClose(io_connect_t conn) {
   return kIOReturnSuccess;
 }
 
-kern_return_t SMCReadKey2(UInt32Char_t key, SMCVal_t *val, io_connect_t conn) {
+kern_return_t SMCReadKey2(UInt32Char_t key, SMCVal_t* val, io_connect_t conn) {
   (void)conn;
 
   char hex[MAX_VALUE_HEX + 1];
@@ -148,8 +148,8 @@ kern_return_t SMCReadKey2(UInt32Char_t key, SMCVal_t *val, io_connect_t conn) {
   return kIOReturnSuccess;
 }
 
-kern_return_t SMCCall2(int index, SMCKeyData_t *input_structure,
-                       SMCKeyData_t *output_structure, io_connect_t conn) {
+kern_return_t SMCCall2(int index, SMCKeyData_t* input_structure,
+                       SMCKeyData_t* output_structure, io_connect_t conn) {
   (void)output_structure;
   (void)conn;
 
@@ -161,7 +161,7 @@ kern_return_t SMCCall2(int index, SMCKeyData_t *input_structure,
   /* The wrapper packs the 4 ASCII key chars big-endian into input.key. */
   char key[5];
   for (int i = 0; i < 4; i++) {
-    key[i] = (char)(input_structure->key >> (24 - 8 * i));
+    key[i] = (char)(input_structure->key >> (24 - (8 * i)));
   }
   key[4] = '\0';
 
@@ -174,7 +174,7 @@ kern_return_t SMCCall2(int index, SMCKeyData_t *input_structure,
 }
 
 /* Same big-endian ASCII packing as the real smc.c (smcFanControl). */
-UInt32 _strtoul(char *str, int size, int base) {
+UInt32 _strtoul(char* str, int size, int base) {
   (void)base;
 
   UInt32 total = 0;

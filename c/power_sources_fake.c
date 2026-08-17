@@ -4,7 +4,8 @@
  * Reads $BATTERYTOOL_FAKE_DIR/battery_script, one whitespace-separated row
  * per line:
  *
- *   <current_mAh> <max_mAh> <design_mAh> <cycle_count> <is_charging> <is_plugged_in>
+ *   <current_mAh> <max_mAh> <design_mAh> <cycle_count> <is_charging>
+ * <is_plugged_in>
  *
  * Each call consumes the row at the position stored in battery_cursor
  * (created on first call), so a test can script a sequence of readings
@@ -19,11 +20,11 @@
 
 #include "power_sources.h"
 
-static long read_cursor(const char *dir) {
+static long read_cursor(const char* dir) {
   char path[PATH_MAX];
   snprintf(path, sizeof(path), "%s/battery_cursor", dir);
 
-  FILE *f = fopen(path, "r");
+  FILE* f = fopen(path, "r");
   if (f == NULL) {
     return 0;
   }
@@ -35,11 +36,11 @@ static long read_cursor(const char *dir) {
   return cursor;
 }
 
-static void write_cursor(const char *dir, long cursor) {
+static void write_cursor(const char* dir, long cursor) {
   char path[PATH_MAX];
   snprintf(path, sizeof(path), "%s/battery_cursor", dir);
 
-  FILE *f = fopen(path, "w");
+  FILE* f = fopen(path, "w");
   if (f != NULL) {
     fprintf(f, "%ld", cursor);
     fclose(f);
@@ -48,7 +49,7 @@ static void write_cursor(const char *dir, long cursor) {
 
 BatteryInfo FetchBatteryInfo(void) {
   BatteryInfo info = {0};
-  const char *dir = getenv("BATTERYTOOL_FAKE_DIR");
+  const char* dir = getenv("BATTERYTOOL_FAKE_DIR");
   if (dir == NULL) {
     return info;
   }
@@ -56,7 +57,7 @@ BatteryInfo FetchBatteryInfo(void) {
   char path[PATH_MAX];
   snprintf(path, sizeof(path), "%s/battery_script", dir);
 
-  FILE *f = fopen(path, "r");
+  FILE* f = fopen(path, "r");
   if (f == NULL) {
     return info;
   }
@@ -74,7 +75,7 @@ BatteryInfo FetchBatteryInfo(void) {
   fclose(f);
 
   /* Past the end of the script, keep returning the final row. */
-  const char *row = selected[0] != '\0' ? selected : last;
+  const char* row = selected[0] != '\0' ? selected : last;
   int charging = 0, plugged = 0;
   if (sscanf(row, "%d %d %d %d %d %d", &info.current_capacity,
              &info.max_capacity, &info.design_capacity, &info.cycle_count,
