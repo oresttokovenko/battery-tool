@@ -1,5 +1,4 @@
 import json
-import platform
 
 import pytest
 
@@ -171,12 +170,8 @@ def test_logs_to_file(hw, tmp_path):
 
 # -- CLI (main.py) --
 
-needs_apple_silicon = pytest.mark.skipif(
-    platform.machine() != "arm64", reason="main() rejects non-Apple-Silicon machines"
-)
 
-
-@needs_apple_silicon
+@pytest.mark.apple_silicon
 def test_cli_status_prints_and_writes_nothing(hw, capfd):
     hw.script((80, 100, 100, 10, 1, 1))
 
@@ -188,7 +183,7 @@ def test_cli_status_prints_and_writes_nothing(hw, capfd):
     assert hw.writes() == ()
 
 
-@needs_apple_silicon
+@pytest.mark.apple_silicon
 def test_cli_picks_tahoe_loop_when_chte_exists(hw):
     hw.set_keys(TAHOE_KEYS)
     hw.script(TARGET_ROW)
@@ -198,7 +193,7 @@ def test_cli_picks_tahoe_loop_when_chte_exists(hw):
     assert hw.writes() == TAHOE_ENABLE
 
 
-@needs_apple_silicon
+@pytest.mark.apple_silicon
 def test_cli_picks_legacy_loop_without_chte(hw):
     hw.set_keys(LEGACY_KEYS)
     hw.script(TARGET_ROW)
@@ -208,7 +203,7 @@ def test_cli_picks_legacy_loop_without_chte(hw):
     assert hw.writes() == LEGACY_ENABLE
 
 
-@needs_apple_silicon
+@pytest.mark.apple_silicon
 def test_cli_refuses_to_run_unplugged(hw, capfd):
     hw.script((50, 100, 100, 10, 0, 0))
 

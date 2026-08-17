@@ -1,5 +1,6 @@
 import logging
 import os
+import platform
 from types import MappingProxyType
 
 # Must be set before any batterytool import so battery.py binds the
@@ -45,6 +46,16 @@ def hw(tmp_path, monkeypatch):
     """Point the fake backend at a fresh tmp dir for this test"""
     monkeypatch.setenv("BATTERYTOOL_FAKE_DIR", str(tmp_path))
     return FakeHardware(tmp_path)
+
+
+def pytest_collection_modifyitems(items):
+    """Central home for conditional marks, applied by name at collection time"""
+    needs_apple_silicon = pytest.mark.skipif(
+        platform.machine() != "arm64", reason="main() rejects non-Apple-Silicon machines"
+    )
+    for item in items:
+        if "apple_silicon" in item.keywords:
+            item.add_marker(needs_apple_silicon)
 
 
 @pytest.fixture(autouse=True)
