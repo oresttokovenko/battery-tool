@@ -63,8 +63,10 @@ jobs:
       - name: Run C tests
         run: uv run nox -s c_test
 
+      # /usr/bin explicitly: install-llvm-action puts its clang first on PATH,
+      # and meson.build requires Apple Clang
       - name: Build wheel
         run: uv build --wheel
         env:
-          CC: clang
-          CXX: clang++
+          CC: /usr/bin/clang
+          CXX: /usr/bin/clang++
