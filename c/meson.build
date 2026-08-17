@@ -27,4 +27,26 @@ py.extension_module(
   subdir: 'batterytool',
 )
 
+# Same extension built against the file-backed fakes: never touches IOKit.
+# Imported instead of the real one when BATTERYTOOL_FAKE is set.
+# Needs its own CFFI codegen pass because the module name is baked into the
+# generated PyInit function.
+cffi_generated_fake = custom_target(
+  'iokit_cffi_gen_fake',
+  output: '_iokit_wrapper_fake.c',
+  command: [
+    py,
+    meson.current_source_dir() / 'build_iokit.py',
+    '@OUTPUT@',
+    'iokit_wrapper_fake',
+  ],
+)
+
+py.extension_module(
+  'iokit_wrapper_fake',
+  [cffi_generated_fake, 'smc_fake.c', 'smc_wrapper.c', 'power_sources_fake.c'],
+  install: true,
+  subdir: 'batterytool',
+)
+
 subdir('tests')

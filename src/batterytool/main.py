@@ -3,8 +3,7 @@ from typing import TYPE_CHECKING, Annotated
 
 import typer
 
-from batterytool.battery import is_apple_silicon, is_tahoe
-from batterytool.iokit_wrapper import lib
+from batterytool.battery import fetch_battery_info, is_apple_silicon, is_tahoe
 from batterytool.logging import setup_logging
 from batterytool.loop import legacy_loop, tahoe_loop
 
@@ -31,7 +30,7 @@ def main(
         logger.error("unsupported", message="Only Apple Silicon Macs are supported")
         return
 
-    battery_info: BatteryInfo = lib.FetchBatteryInfo()
+    battery_info: BatteryInfo = fetch_battery_info()
 
     if battery_info.max_capacity <= 0 or battery_info.design_capacity <= 0:
         logger.error("invalid_battery_data", message="Failed to read valid battery capacity from IOKit")

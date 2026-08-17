@@ -42,10 +42,17 @@ Tahoe keys (macOS 15.7+):
   are available at runtime by attempting to read each one.
 """
 
+import os
 import platform
 
 from batterytool.constants import SMCKeys, SMCValues
-from batterytool.iokit_wrapper import ffi, lib
+
+# BATTERYTOOL_FAKE swaps in the file-backed fake backend (see c/smc_fake.c),
+# so the whole package can run in tests/CI/VMs without touching the SMC.
+if os.environ.get("BATTERYTOOL_FAKE"):
+    from batterytool.iokit_wrapper_fake import ffi, lib
+else:
+    from batterytool.iokit_wrapper import ffi, lib
 
 
 def fetch_battery_info():
