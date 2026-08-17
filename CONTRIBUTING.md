@@ -83,10 +83,10 @@ Hardware-dependent C tests (those that talk to the SMC or IOKit) are tagged with
 
 Tests never touch real hardware and never use mocks. Instead, the package is built with **two** extension modules exposing the same API:
 
-- `iokit_wrapper` — the real one, talks to IOKit/SMC
-- `iokit_wrapper_fake` — file-backed fakes (`c/smc_fake.c`, `c/power_sources_fake.c`)
+- `iokit_wrapper`: the real one, talks to IOKit/SMC
+- `iokit_wrapper_fake`: file-backed fakes (`c/smc_fake.c`, `c/power_sources_fake.c`)
 
-Setting `BATTERYTOOL_FAKE=1` makes `battery.py` bind the fake at import time, so the entire package — CLI included — runs the real code path end-to-end, including CFFI byte marshaling and the Tahoe CHIE→CH0J fallback.
+Setting `BATTERYTOOL_FAKE=1` makes `battery.py` bind the fake at import time, so the entire package, CLI included, runs the real code path end-to-end, including CFFI byte marshaling and the Tahoe fallback from CHIE to CH0J.
 
 ### How the fake is steered
 
@@ -114,9 +114,9 @@ def test_tahoe_disables_above_max(hw):
     assert hw.writes() == ("CHTE=01000000", "CHIE=08", "CHTE=00000000", "CHIE=00")
 ```
 
-To exercise the Tahoe fallback, omit `CHIE` from `set_keys` — the write fails like real hardware and the loop falls back to `CH0J`.
+To exercise the Tahoe fallback, omit `CHIE` from `set_keys`. The write then fails like real hardware and the loop falls back to `CH0J`.
 
-Custom pytest marks (e.g. `apple_silicon`) are registered in `pyproject.toml` and applied in `conftest.py`'s `pytest_collection_modifyitems` — don't add `skipif` logic inline in test files.
+Custom pytest marks (e.g. `apple_silicon`) are registered in `pyproject.toml` and applied in `conftest.py`'s `pytest_collection_modifyitems`, so don't add `skipif` logic inline in test files.
 
 ### Writing a C test
 
